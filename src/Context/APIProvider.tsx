@@ -21,7 +21,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
           "https://api.jolpi.ca/ergast/f1/2025/races.json"
         );
         const data: RaceResponse = await response.json();
-        console.log("RaceData:", data);
 
         if (data.MRData.RaceTable.Races.length > 0) {
           // Sortera racen efter datum i fallande ordning (nyaste först)
@@ -73,7 +72,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
 
           if (selectedRaceData?.Results) {
             setResults(selectedRaceData.Results);
-            console.log("Set results:", selectedRaceData.Results);
 
             // Extrahera fastestLap
             const fastestLapData = selectedRaceData.Results.find(
