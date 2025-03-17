@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { TooltipItem } from "chart.js";
+//import { TooltipItem } from "chart.js";
+import { ChartOptions } from "chart.js";
 import { Race } from "../Types/Type";
 import { teamColors } from "../TeamColors";
 import {
@@ -107,7 +108,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
     }),
     fill: false,
     pointRadius: 5,
-    yAxisID: "y1",
+    yAxisID: "y",
   };
 
   // Förbered data för diagrammet
@@ -117,34 +118,45 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
   };
 
   // Konfigurera y-axlar för tid och varv
-  const options = {
+  const options: ChartOptions<"line"> = {
+    responsive: true,
     scales: {
       x: {
-        type: "category", // Här använder vi kategorisk typ för x-axeln (tid)
+        type: "category",
         title: {
-          display: true,
-          text: "Time", // Tid på x-axeln
+          display: false,
+          padding: 10,
         },
       },
-      y1: {
+      y: {
         type: "linear",
         position: "left",
-        ticks: {
-          beginAtZero: true,
-        },
         title: {
           display: true,
-          text: "Lap", // Varv på vänster y-axel
+          text: "Lap", // Etiketten på vänstra y-axeln
+          font: {
+            size: 16, // Ändra storlek på texten
+            family: "'Arial', sans-serif", // Sätt en specifik fontfamilj
+            weight: "bold", // Ställ in fontvikt (t.ex. "bold", "normal")
+          },
+          color: "white", // Ändra färg på texten
+        },
+        ticks: {
+          callback: (value) => value,
+          padding: 30,
+          font: {
+            size: 15, // Ändra fontstorlek på Lap-ticksen här
+            family: "'Arial', sans-serif", // Sätt en specifik fontfamilj
+            weight: "normal", // Sätt fontvikt
+          },
         },
       },
     },
-    // Tooltip options för att visa duration på hover
     plugins: {
       tooltip: {
         callbacks: {
-          label: (context: TooltipItem<"line">) => {
+          label: (context) => {
             const rawData = context.raw as { x: string; y: number } | undefined;
-
             if (!rawData) return "";
 
             const pitstop = pitstops.find((p) => p.time === rawData.x);
@@ -154,10 +166,9 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
           },
         },
       },
-      legend: { display: false }, // Ingen legend
+      legend: { display: false },
     },
   };
-
   if (pitstops.length === 0) {
     return (
       <div>

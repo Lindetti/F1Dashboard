@@ -3,6 +3,7 @@ import { teamColors } from "../TeamColors";
 import CustomMap from "./CustomMap";
 import PitstopChart from "./PitstopChart";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { races, selectedRace, setSelectedRace, results, fastestLap } =
@@ -27,12 +28,14 @@ const Home = () => {
   return (
     <div className=" md:w-4/6 min-h-screen flex flex-col gap-8 mb-5">
       <div className="flex justify-between gap-4 h-[50px]">
-        <div className="bg-[#27272A] flex-1 rounded-md pl-4 flex items-center text-white">
-          <p className="font-bold">Standings</p>
-        </div>
+        <Link to="/driverstandings" className="flex flex-1">
+          <div className="bg-[#27272A] flex-1 rounded-md pl-4 flex items-center text-white hover:bg-slate-800">
+            <p className="font-bold">Standings</p>
+          </div>
+        </Link>
         <div className="relative bg-[#27272A] flex-1 rounded-md flex items-center text-white">
           <select
-            className="bg-[#333] text-white h-full rounded-md w-full px-3 pr-10 font-bold cursor-pointer appearance-none"
+            className="bg-[#27272A] text-white h-full rounded-md w-full px-3 pr-10 font-bold cursor-pointer appearance-none "
             onChange={(e) => setSelectedRace(e.target.value)}
             value={selectedRace}
           >
@@ -48,15 +51,14 @@ const Home = () => {
                   }`}
                   key={race.Circuit.circuitId}
                   value={race.Circuit.circuitId}
-                  disabled={isFutureRace} // Inaktiverar framtida race
+                  disabled={isFutureRace}
                 >
-                  {race.raceName}
+                  <strong>{race.round}</strong> - {race.raceName}
                 </option>
               );
             })}
           </select>
 
-          {/* Anpassad pil-ikon */}
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400">
             ▼
           </div>
@@ -148,6 +150,10 @@ const Home = () => {
                   )}
 
                   <div className="flex-shrink-0 w-[300px] flex flex-col justify-start gap-4">
+                    <p className="p-1 px-3 rounded-2xl text-lg text-center">
+                      {" "}
+                      {selectedRaceData.Circuit.circuitName}
+                    </p>
                     <div className="flex justify-center">
                       <p className="bg-[#3F3F46] p-1 px-3 rounded-2xl text-lg">
                         {selectedRaceData.Circuit.Location.locality},{" "}

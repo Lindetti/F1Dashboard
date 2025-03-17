@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { APIProvider } from "./Context/APIProvider";
 import Navbar from "./Components/Navbar";
 import Home from "./Components/Home";
-import Standings from "./Components/Standings";
+import DriverStandings from "./Components/DriverStandings";
 import DriverInfo from "./Components/DriverInfo";
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/standings" element={<Standings />} />
+          <Route path="/driverstandings" element={<DriverStandings />} />
           <Route path="/driver" element={<DriverInfo />} />
         </Routes>
       </div>
