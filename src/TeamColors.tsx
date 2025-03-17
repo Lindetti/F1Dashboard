@@ -1,0 +1,14 @@
+export const teamColors: { [key: string]: string } = {
+  "Red Bull": "#153666",
+  Mercedes: "#00A19B",
+  Ferrari: "#E80020",
+  McLaren: "#FF8000",
+  "Aston Martin": "#037A68",
+  "Alpine F1 Team": "#0093CC",
+  Williams: "#64C4FF",
+  "Haas F1 Team": "#B6BABD",
+  "Stake F1 Team": "#00A19C",
+  "Visa Cash App RB": "#2B4562",
+  "RB F1 Team": "#6692FF",
+  Sauber: "#52E252",
+};
