@@ -2,10 +2,13 @@ import { useAPI } from "../Context/useAPI";
 import { teamColors } from "../TeamColors";
 import CustomMap from "./CustomMap";
 import PitstopChart from "./PitstopChart";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import homeDriver2 from "../Images/homeDriver.png";
 
 const Home = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { races, selectedRace, setSelectedRace, results, fastestLap } =
     useAPI();
   const [raceLocation, setRaceLocation] = useState<{
@@ -16,6 +19,19 @@ const Home = () => {
   const selectedRaceData = races.find(
     (race) => race.Circuit.circuitId === selectedRace
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (selectedRaceData) {
@@ -29,39 +45,59 @@ const Home = () => {
     <div className=" md:w-4/6 min-h-screen flex flex-col gap-8 mb-5">
       <div className="flex justify-between gap-4 h-[50px]">
         <Link to="/driverstandings" className="flex flex-1">
-          <div className="bg-[#27272A] flex-1 rounded-md pl-4 flex items-center text-white hover:bg-slate-800">
-            <p className="font-bold">Standings</p>
+          <div className="bg-[#27272A] flex-1 rounded-lg pl-4 flex items-center text-white border border-transparent hover:border-blue-700 hover:bg-[#383838] transition-all duration-300">
+            <p className="font-bold">Driver Standings</p>
           </div>
         </Link>
-        <div className="relative bg-[#27272A] flex-1 rounded-md flex items-center text-white">
-          <select
-            className="bg-[#27272A] text-white h-full rounded-md w-full px-3 pr-10 font-bold cursor-pointer appearance-none "
-            onChange={(e) => setSelectedRace(e.target.value)}
-            value={selectedRace}
+        <div
+          className="relative bg-[#27272A] flex-1 rounded-md text-white"
+          ref={dropdownRef}
+        >
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="bg-[#27272A] text-gray-400 h-full rounded-lg w-full px-3 pr-5 font-bold flex items-center justify-between cursor-pointer border border-transparent hover:border-blue-700 hover:bg-[#383838] transition-all duration-300"
           >
-            {races.map((race) => {
-              const raceDate = new Date(race.date);
-              const today = new Date();
-              const isFutureRace = raceDate > today; // Om race-datumet är efter dagens datum
+            {races.find((race) => race.Circuit.circuitId === selectedRace)
+              ?.raceName || "No race found"}
+            <span className="text-gray-400">▼</span>
+          </button>
 
-              return (
-                <option
-                  className={`bg-white rounded-2xl font-mono ${
-                    isFutureRace ? "text-gray-500" : "text-black"
-                  }`}
-                  key={race.Circuit.circuitId}
-                  value={race.Circuit.circuitId}
-                  disabled={isFutureRace}
-                >
-                  <strong>{race.round}</strong> - {race.raceName}
-                </option>
-              );
-            })}
-          </select>
+          {/* Dropdown-meny */}
+          {isOpen && (
+            <ul className="absolute w-full bg-white text-black mt-2 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+              {races.map((race) => {
+                const raceDate = new Date(race.date);
+                const today = new Date();
+                const isFutureRace = raceDate > today; // Om race-datumet är i framtiden
 
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400">
-            ▼
-          </div>
+                return (
+                  <li
+                    key={race.Circuit.circuitId}
+                    className={`px-4 py-2 cursor-pointer ${
+                      isFutureRace
+                        ? "text-gray-500 cursor-not-allowed"
+                        : "hover:bg-gray-700"
+                    } ${
+                      selectedRace === race.Circuit.circuitId
+                        ? "bg-gray-700 text-white"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      !isFutureRace && setSelectedRace(race.Circuit.circuitId)
+                    }
+                  >
+                    <span className="font-bold">{race.round}</span> -{" "}
+                    {race.raceName}{" "}
+                    {isFutureRace && (
+                      <span className="text-sm text-gray-400">
+                        ({new Date(race.date).toLocaleDateString()})
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
         <div className="bg-[#27272A] flex-1 rounded-md pl-4 flex items-center text-white">
           <p className="font-bold">Select session</p>
@@ -106,9 +142,9 @@ const Home = () => {
           </div>
           <div className="bg-gradient-to-r from-purple-900 via-purple-800 to-purple-700 text-white font-mono w-full p-4 rounded-2xl h-[40px] flex items-center mt-2 border border-gray-400 shadow-lg">
             {fastestLap ? (
-              <div className="w-full flex gap-4 items-center">
+              <div className="w-full flex items-center justify-between">
                 <h1 className="font-bold text-2xl uppercase">Fastest Lap</h1>
-                <div className="flex gap-5 justify-between mx-2">
+                <div className="flex gap-10 justify-between mx-2">
                   <div className="flex gap-2 items-center">
                     <p className="text-lg">{fastestLap.time}</p>
                     <p>-</p>
@@ -181,7 +217,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className=" w-[320px]">
+        <div className="h-auto w-[320px] flex flex-col gap-5">
           <div className="overflow-x-auto">
             <table className="table-auto w-full border-collapse">
               <thead>
@@ -215,15 +251,20 @@ const Home = () => {
                         {driver.position}
                       </td>
                       <td
-                        className={`flex items-center gap-2 px-4 py-2 ${
-                          index % 2 !== 0 ? "" : ""
-                        }`}
+                        className={`flex items-center gap-2 px-4 py-2 relative`}
                       >
                         <div
                           style={{ backgroundColor: teamColor }}
                           className="w-[5px] h-[15px]"
                         ></div>
-                        <div>{driver.Driver.code}</div>
+                        <div className="relative group">
+                          <div className="cursor-default">
+                            {driver.Driver.code}
+                          </div>
+                          <div className="absolute w-32 border left-full top-1/2 transform -translate-y-1/2 ml-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+                            {driver.Driver.givenName} {driver.Driver.familyName}
+                          </div>
+                        </div>
                       </td>
                       <td
                         className={`px-4 py-2 ${
@@ -254,6 +295,26 @@ const Home = () => {
                 })}
               </tbody>
             </table>
+          </div>
+          <div className="h-[310px] mt-5 relative">
+            {/* Bilden med rundade hörn */}
+            <img
+              className="rounded-tr-2xl rounded-br-3xl rounded-bl-2xl 
+               relative brightness-75"
+              src={homeDriver2}
+              alt="driverAI"
+            />
+
+            {/* Skuggan som ligger ovanpå */}
+            <div
+              className="absolute inset-0 rounded-tr-2xl rounded-br-3xl rounded-bl-2xl 
+                bg-gradient-to-r from-transparent to-blue-500 opacity-40"
+            ></div>
+
+            {/* Texten "RaceView" längst ner */}
+            <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-yellow-500 text-center py-4 rounded-bl-2xl rounded-br-3xl">
+              <p className="font-bold text-2xl"> F1 RaceView</p>
+            </div>
           </div>
         </div>
       </div>

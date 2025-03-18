@@ -55,42 +55,52 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
     if (!selectedRaceData) return;
 
     const fetchPitstopData = async () => {
-      const response = await fetch(
-        `https://api.jolpi.ca/ergast/f1/2025/${selectedRaceData.round}/pitstops.json`
-      );
-      const data = await response.json();
+      try {
+        const year = new Date().getFullYear(); // Dynamiskt år
+        const response = await fetch(
+          `https://api.jolpi.ca/ergast/f1/${year}/${selectedRaceData.round}/pitstops.json`
+        );
+        const data = await response.json();
 
-      const driverPitstops: Pitstop[] =
-        data.MRData?.RaceTable?.Races?.[0]?.PitStops?.map(
-          (pitstop: Pitstop) => ({
-            lap: pitstop.lap,
-            time: pitstop.time,
-            duration: pitstop.duration,
-            driverId: pitstop.driverId,
-            driverName: pitstop.driverId, // Placeholder, vi uppdaterar senare
-          })
-        ) || [];
+        const driverPitstops: Pitstop[] =
+          data.MRData?.RaceTable?.Races?.[0]?.PitStops?.map(
+            (pitstop: Pitstop) => ({
+              lap: pitstop.lap,
+              time: pitstop.time,
+              duration: pitstop.duration,
+              driverId: pitstop.driverId,
+              driverName: pitstop.driverId, // Placeholder, vi uppdaterar senare
+            })
+          ) || [];
 
-      setPitstops(driverPitstops);
+        setPitstops(driverPitstops);
+      } catch (error) {
+        console.error("Error fetching pitstop data:", error);
+      }
     };
 
     const fetchDriverStandingsData = async () => {
-      const response = await fetch(
-        `https://api.jolpi.ca/ergast/f1/2025/${selectedRaceData.round}/driverstandings.json`
-      );
-      const data = await response.json();
+      try {
+        const year = new Date().getFullYear(); // Dynamiskt år
+        const response = await fetch(
+          `https://api.jolpi.ca/ergast/f1/${year}/${selectedRaceData.round}/driverstandings.json`
+        );
+        const data = await response.json();
 
-      const driverTeamMap: { [key: string]: string } = {};
+        const driverTeamMap: { [key: string]: string } = {};
 
-      data.MRData.StandingsTable.StandingsLists[0].DriverStandings.forEach(
-        (driverStanding: DriverStandings) => {
-          const driverId = driverStanding.Driver.driverId;
-          const teamName = driverStanding.Constructors[0]?.name;
-          driverTeamMap[driverId] = teamName;
-        }
-      );
+        data.MRData.StandingsTable.StandingsLists?.[0]?.DriverStandings?.forEach(
+          (driverStanding: DriverStandings) => {
+            const driverId = driverStanding.Driver.driverId;
+            const teamName = driverStanding.Constructors[0]?.name || "Unknown";
+            driverTeamMap[driverId] = teamName;
+          }
+        );
 
-      setDrivers(driverTeamMap);
+        setDrivers(driverTeamMap);
+      } catch (error) {
+        console.error("Error fetching driver standings data:", error);
+      }
     };
 
     fetchPitstopData();
