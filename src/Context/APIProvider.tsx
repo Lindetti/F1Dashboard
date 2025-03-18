@@ -17,8 +17,9 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchRaces = async () => {
       try {
+        const year = new Date().getFullYear();
         const response = await fetch(
-          "https://api.jolpi.ca/ergast/f1/2025/races.json"
+          `https://api.jolpi.ca/ergast/f1/${year}/races.json`
         );
         const data: RaceResponse = await response.json();
 
@@ -59,8 +60,9 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchRaceResults = async () => {
       try {
+        const year = new Date().getFullYear();
         const response = await fetch(
-          `https://api.jolpi.ca/ergast/f1/2025/circuits/${selectedRace}/results.json`
+          `https://api.jolpi.ca/ergast/f1/${year}/circuits/${selectedRace}/results.json`
         );
         const data: RaceResponse = await response.json();
 
