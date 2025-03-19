@@ -61,6 +61,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
           `https://api.jolpi.ca/ergast/f1/${year}/${selectedRaceData.round}/pitstops.json`
         );
         const data = await response.json();
+        console.log(data);
 
         const driverPitstops: Pitstop[] =
           data.MRData?.RaceTable?.Races?.[0]?.PitStops?.map(
