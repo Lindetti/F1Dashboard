@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 
 interface DriverStanding {
   Driver: {
@@ -69,25 +68,24 @@ const DriverStandings = () => {
   }, []);
 
   return (
-    <div className=" md:w-4/6 min-h-screen flex flex-col gap-4 mb-5 text-white p-4">
+    <div className="md:w-4/6 min-h-screen flex flex-col gap-2 mb-5 text-black">
       <div className="flex justify-between items-center ">
-        <Link
-          className="bg-gray-600 w-[150px] h-[40px] flex items-center justify-center rounded-lg cursor-pointer"
-          to="/"
-        >
-          Back to dashboard
-        </Link>
+        <div className="h-[80px]">
+          <h1 className="font-bold text-5xl">Championship Standings</h1>
+        </div>
 
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="bg-gray-600 text-white flex items-center justify-between p-2 rounded-md cursor-pointer w-[100px] h-[40px]"
+            className=" border border-gray-400 flex items-center justify-between p-2 rounded-md cursor-pointer w-[150px] h-[40px]"
           >
-            {selectedYear}
+            {selectedYear === currentYear
+              ? "Current Season"
+              : `Season: ${selectedYear}`}
             <div>▼</div>
           </button>
           {isDropdownOpen && (
-            <div className="absolute bg-gray-600 text-white w-[100px] mt-1 rounded-md shadow-md">
+            <div className="absolute bg-white border w-[150px] mt-1 rounded-md shadow-md">
               {yearOptions.map((year) => (
                 <div
                   key={year}
@@ -95,9 +93,9 @@ const DriverStandings = () => {
                     setSelectedYear(year);
                     setIsDropdownOpen(false);
                   }}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-500"
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                 >
-                  {year}
+                  {year === currentYear ? "Current Season" : `Season ${year}`}
                 </div>
               ))}
             </div>
@@ -105,15 +103,26 @@ const DriverStandings = () => {
         </div>
       </div>
 
-      <div className="bg-gray-800 p-5 rounded-lg shadow-lg">
-        <div className="bg-gray-800 h-[80px] p-2">
-          <h1 className="font-bold text-3xl">Driver Standings {season}</h1>
+      <div className="flex flex-col gap-8 mb-4">
+        <div className="flex gap-5 bg-gray-300 w-[400px] h-[40px] items-center justify-center">
+          <p>Driver Standings</p>
+          <p>Constructor Standings</p>
         </div>
+
+        <div className="flex flex-col">
+          <h1 className="font-bold text-2xl">Driver Championship</h1>
+          <p className="font-semibold text-gray-400 pl-0.5">
+            {season} Season Driver Standings
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-white p-5 rounded-lg shadow-lg border">
         {loading ? (
           <div className="text-center text-xl py-10">Loading...</div>
         ) : (
           <table className="w-full table-auto">
-            <thead className="bg-gray-800 text-left uppercase border-b border-gray-500">
+            <thead className="bg-white text-left uppercase border-b border-gray-500">
               <tr>
                 <th className="border-b-0 px-4 py-5">Pos</th>
                 <th className="px-4 py-2">Driver</th>
@@ -128,7 +137,7 @@ const DriverStandings = () => {
                 .map((standing, index) => (
                   <tr
                     key={standing.Driver.driverId}
-                    className={index % 2 === 0 ? "bg-gray-800 " : "bg-gray-700"}
+                    className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
                   >
                     <td className="px-5 py-4">{standing.position}</td>
                     <td className="px-4 py-2">

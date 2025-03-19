@@ -42,20 +42,17 @@ const Home = () => {
   }, [selectedRace, selectedRaceData]); // Uppdatera när selectedRace eller selectedRaceData ändras
 
   return (
-    <div className=" md:w-4/6 min-h-screen flex flex-col gap-8 mb-5">
+    <div className=" w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5">
       <div className="flex justify-between gap-4 h-[50px]">
         <Link to="/driverstandings" className="flex flex-1">
-          <div className="bg-[#27272A] flex-1 rounded-lg pl-4 flex items-center text-white border border-transparent hover:border-blue-700 hover:bg-[#383838] transition-all duration-300">
-            <p className="font-bold">Driver Standings</p>
+          <div className="bg-[#E10600] flex-1 rounded-lg pl-4 flex items-center text-white border border-transparent hover:border-blue-700 hover:bg-[#b44545] transition-all duration-300">
+            <p className="font-semibold">View Standings</p>
           </div>
         </Link>
-        <div
-          className="relative bg-[#27272A] flex-1 rounded-md text-white"
-          ref={dropdownRef}
-        >
+        <div className="relative  flex-1 rounded-md" ref={dropdownRef}>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-[#27272A] text-gray-400 h-full rounded-lg w-full px-3 pr-5 font-bold flex items-center justify-between cursor-pointer border border-transparent hover:border-blue-700 hover:bg-[#383838] transition-all duration-300"
+            className="border border-gray-300  h-full rounded-lg w-full px-3 pr-5 font-semibold flex items-center justify-between cursor-pointer "
           >
             {races.find((race) => race.Circuit.circuitId === selectedRace)
               ?.raceName || "No race found"}
@@ -64,7 +61,7 @@ const Home = () => {
 
           {/* Dropdown-meny */}
           {isOpen && (
-            <ul className="absolute w-full bg-white text-black mt-2 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+            <ul className="absolute w-full bg-white text-black mt-2 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto border border-gray-300 ">
               {races.map((race) => {
                 const raceDate = new Date(race.date);
                 const today = new Date();
@@ -99,7 +96,7 @@ const Home = () => {
             </ul>
           )}
         </div>
-        <div className="bg-[#27272A] flex-1 rounded-md pl-4 flex items-center text-white">
+        <div className="border border-gray-300 flex-1 rounded-md pl-4 flex items-center ">
           <p className="font-bold">Select session</p>
         </div>
       </div>
@@ -161,11 +158,11 @@ const Home = () => {
             )}
           </div>
 
-          <div className="mt-2">
+          <div className="mt-2 text-black">
             {selectedRaceData ? (
-              <div className="w-full bg-gray-800 flex flex-col gap-4 p-4 rounded-lg shadow-lg">
+              <div className="w-full bg-[#f3f4f6] flex flex-col gap-4 p-4 rounded-lg border">
                 <div className="flex justify-between">
-                  <p className="font-bold text-3xl">
+                  <p className="font-semibold text-3xl">
                     {selectedRaceData.raceName} {selectedRaceData.season}
                   </p>
                 </div>
@@ -191,13 +188,13 @@ const Home = () => {
                       {selectedRaceData.Circuit.circuitName}
                     </p>
                     <div className="flex justify-center">
-                      <p className="bg-[#3F3F46] p-1 px-3 rounded-2xl text-lg">
+                      <p className="bg-[#3F3F46] p-1 px-3 rounded-2xl text-lg text-white ">
                         {selectedRaceData.Circuit.Location.locality},{" "}
                         {selectedRaceData.Circuit.Location.country}{" "}
                       </p>
                     </div>
                     <div className="flex justify-center">
-                      <p className="bg-[#3F3F46] font-bold text-lg uppercase font-mono p-0.5 px-3 rounded-2xl">
+                      <p className="bg-[#3F3F46] font-bold text-lg uppercase font-mono p-0.5 px-3 rounded-2xl text-white">
                         {new Date(selectedRaceData.date).toLocaleDateString(
                           "en-GB",
                           { month: "long", day: "numeric" }
@@ -211,8 +208,8 @@ const Home = () => {
               <p>No race selected</p>
             )}
           </div>
-          <div className="flex flex-col gap-5 bg-gray-800 p-4 rounded-lg shadow-lg">
-            <h2 className="font-bold text-2xl">Pitstops</h2>
+          <div className="flex flex-col gap-5 bg-[#f3f4f6] p-4 rounded-lg border text-black">
+            <h2 className="font-semibold text-2xl">Pitstops</h2>
             <PitstopChart selectedRaceData={selectedRaceData} />
           </div>
         </div>
@@ -221,7 +218,7 @@ const Home = () => {
           <div className="overflow-x-auto">
             <table className="table-auto w-full border-collapse">
               <thead>
-                <tr className="bg-[#27272A] text-gray-400 rounded-3xl">
+                <tr className="bg-[#f3f4f6] border text-black rounded-3xl">
                   <th className="rounded-l-md px-4 py-2">Position</th>
                   <th className="px-4 py-2">Driver</th>
                   <th className="rounded-r-md px-4 py-2">Time</th>
@@ -236,29 +233,29 @@ const Home = () => {
                     <tr
                       key={index}
                       className={`text-center font-bold ${
-                        index % 2 !== 0 ? "bg-[#27272A]" : ""
+                        index % 2 !== 0 ? "bg-[#f3f4f6]" : "bg-white"
                       } ${
                         driver.position === "1"
                           ? "text-yellow-500"
-                          : "text-white"
+                          : "text-black"
                       }`}
                     >
                       <td
-                        className={`px-4 py-2 ${
+                        className={`border-l border-b px-4 py-2 ${
                           index % 2 !== 0 ? "rounded-l-lg" : ""
                         }`}
                       >
                         {driver.position}
                       </td>
                       <td
-                        className={`flex items-center gap-2 px-4 py-2 relative`}
+                        className={`flex items-center gap-2 px-4 py-2 relative border-b`}
                       >
                         <div
                           style={{ backgroundColor: teamColor }}
                           className="w-[5px] h-[15px]"
                         ></div>
                         <div className="relative group">
-                          <div className="cursor-default">
+                          <div className="cursor-default ">
                             {driver.Driver.code}
                           </div>
                           <div className="absolute w-32 border left-full top-1/2 transform -translate-y-1/2 ml-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
@@ -267,7 +264,7 @@ const Home = () => {
                         </div>
                       </td>
                       <td
-                        className={`px-4 py-2 ${
+                        className={`border-r border-b px-4 py-2 ${
                           index % 2 !== 0 ? "rounded-r-lg" : ""
                         }`}
                       >
@@ -296,7 +293,7 @@ const Home = () => {
               </tbody>
             </table>
           </div>
-          <div className="h-[310px] mt-5 relative">
+          <div className="h-[310px] relative">
             {/* Bilden med rundade hörn */}
             <img
               className="rounded-tr-2xl rounded-br-3xl rounded-bl-2xl 
