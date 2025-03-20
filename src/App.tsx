@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { APIProvider } from "./Context/APIProvider";
 import Navbar from "./Components/Navbar";
 import Home from "./Components/Home";
-import DriverStandings from "./Components/DriverStandings";
+import Standings from "./Components/Standings";
 import DriverInfo from "./Components/DriverInfo";
 import Footer from "./Components/Footer";
 
@@ -13,7 +13,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/driverstandings" element={<DriverStandings />} />
+          <Route path="/standings" element={<Standings />} />
           <Route path="/driver" element={<DriverInfo />} />
         </Routes>
         <Footer />

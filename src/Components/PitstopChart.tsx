@@ -61,7 +61,6 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
           `https://api.jolpi.ca/ergast/f1/${year}/${selectedRaceData.round}/pitstops.json`
         );
         const data = await response.json();
-        console.log(data);
 
         const driverPitstops: Pitstop[] =
           data.MRData?.RaceTable?.Races?.[0]?.PitStops?.map(
@@ -150,7 +149,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
             family: "'Arial', sans-serif", // Sätt en specifik fontfamilj
             weight: "bold", // Ställ in fontvikt (t.ex. "bold", "normal")
           },
-          color: "white", // Ändra färg på texten
+          color: "black", // Ändra färg på texten
         },
         ticks: {
           callback: (value) => value,

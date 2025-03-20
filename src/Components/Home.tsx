@@ -44,7 +44,7 @@ const Home = () => {
   return (
     <div className=" w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5">
       <div className="flex justify-between gap-4 h-[50px]">
-        <Link to="/driverstandings" className="flex flex-1">
+        <Link to="/standings" className="flex flex-1">
           <div className="bg-[#E10600] flex-1 rounded-lg pl-4 flex items-center text-white border border-transparent hover:border-blue-700 hover:bg-[#b44545] transition-all duration-300">
             <p className="font-semibold">View Standings</p>
           </div>
@@ -232,7 +232,7 @@ const Home = () => {
                   return (
                     <tr
                       key={index}
-                      className={`text-center font-bold ${
+                      className={`text-center font-semibold ${
                         index % 2 !== 0 ? "bg-[#f3f4f6]" : "bg-white"
                       } ${
                         driver.position === "1"
@@ -296,7 +296,7 @@ const Home = () => {
           <div className="h-[310px] relative">
             {/* Bilden med rundade hörn */}
             <img
-              className="rounded-tr-2xl rounded-br-3xl rounded-bl-2xl 
+              className="rounded-tr-2xl rounded-br-3xl  
                relative brightness-75"
               src={homeDriver2}
               alt="driverAI"
@@ -304,13 +304,18 @@ const Home = () => {
 
             {/* Skuggan som ligger ovanpå */}
             <div
-              className="absolute inset-0 rounded-tr-2xl rounded-br-3xl rounded-bl-2xl 
+              className="absolute inset-0 rounded-br-3xl 
                 bg-gradient-to-r from-transparent to-blue-500 opacity-40"
             ></div>
 
             {/* Texten "RaceView" längst ner */}
-            <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-yellow-500 text-center py-4 rounded-bl-2xl rounded-br-3xl">
-              <p className="font-bold text-2xl"> F1 RaceView</p>
+            <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-center py-4  rounded-br-3xl">
+              <div className="flex justify-center items-center gap-1">
+                <div className="bg-[#E10600] p-1 flex items-center justify-center rounded-md h-[35px]">
+                  <h1 className="text-white font-bold text-2xl">F1</h1>
+                </div>
+                <h1 className="text-2xl font-bold"> RaceView</h1>
+              </div>
             </div>
           </div>
         </div>

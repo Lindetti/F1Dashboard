@@ -11,4 +11,11 @@ export const teamColors: { [key: string]: string } = {
   "Visa Cash App RB": "#2B4562",
   "RB F1 Team": "#6692FF",
   Sauber: "#52E252",
+  "Alfa Romeo": "#900000",
+  AlphaTauri: "#2B4562",
+  "Racing Point": "#F596C8",
+  "Toro Rosso": "#469BFF",
+  Renault: "#FFF500",
+  "Force India": "#00A85C",
+  "Manor Marussia": "#006DC1",
 };

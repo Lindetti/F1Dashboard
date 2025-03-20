@@ -10,10 +10,30 @@ const Navbar = () => {
           </div>
           <h1 className="text-2xl font-bold"> RaceView</h1>
         </div>
-        <div className="flex gap-4 ">
-          <NavLink to="/">Dashboard</NavLink>
-          <p>Standings</p>
+        <div className="flex gap-4 font-semibold ">
+          <NavLink
+            to="/"
+            className={
+              ({ isActive }) =>
+                isActive
+                  ? "text-[#E10600] underline underline-offset-8 decoration-2" // Röd text, understrykning med avstånd
+                  : "text-black" // Standard textfärg
+            }
+          >
+            Dashboard
+          </NavLink>
+          <NavLink
+            to="/standings"
+            className={({ isActive }) =>
+              isActive
+                ? "text-[#E10600] underline underline-offset-8 decoration-2"
+                : "text-black"
+            }
+          >
+            Standings
+          </NavLink>
           <p>Drivers</p>
+          <p>About</p>
         </div>
       </div>
     </nav>
