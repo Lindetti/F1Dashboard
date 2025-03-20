@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import DriverStandings from "./DriverStandings";
 import ConstructorStandings from "./ConstructorStandings";
 import { motion } from "framer-motion";
-import StandingsDriverImage from "../Images/standingsdriver2.png";
+import StandingsDriverImage from "../Images/standingsDriver2.png";
 
 const Standings = () => {
   const currentYear = new Date().getFullYear();
