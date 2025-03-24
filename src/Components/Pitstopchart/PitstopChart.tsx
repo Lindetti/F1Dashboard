@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 //import { TooltipItem } from "chart.js";
 import { ChartOptions } from "chart.js";
-import { Race } from "../Types/Type";
-import { teamColors } from "../TeamColors";
+import { Race } from "../../Types/Type";
+import { teamColors } from "../../TeamColors";
 import {
   Chart as ChartJS,
   Title,

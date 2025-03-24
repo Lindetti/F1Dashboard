@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import DriverStandings from "./DriverStandings";
-import ConstructorStandings from "./ConstructorStandings";
+import DriverStandings from "./Standings/DriverStandings";
+import ConstructorStandings from "./Standings/ConstructorStandings";
 import { motion } from "framer-motion";
 import StandingsDriverImage from "../Images/standingsDriver2.png";
 
@@ -77,8 +77,10 @@ const Standings = () => {
                     setSelectedYear(year);
                     setIsDropdownOpen(false);
                   }}
-                  className={`px-4 py-2 cursor-pointer hover:bg-[#E10600] hover:text-white ${
-                    selectedYear === year ? "bg-[#E10600] text-white" : ""
+                  className={`px-4 py-2 cursor-pointer ${
+                    selectedYear === year
+                      ? "bg-[#E10600] text-white"
+                      : "hover:bg-gray-200"
                   }`}
                 >
                   {year === currentYear ? "Current Season" : `Season ${year}`}

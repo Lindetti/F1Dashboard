@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { flagData } from "../../flagData";
+import { teamColors } from "../../TeamColors";
 
 interface DriverStanding {
   Driver: {
@@ -65,24 +67,45 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
           <tbody>
             {driverStandings
               .filter((standing) => !isNaN(Number(standing.position))) // Filtrera bort de utan giltig position
-              .map((standing, index) => (
-                <tr
-                  key={standing.Driver.driverId}
-                  className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
-                >
-                  <td className="px-5 py-4 ">{standing.position}</td>
-                  <td className="px-4 py-2">
-                    {standing.Driver.givenName} {standing.Driver.familyName}
-                  </td>
-                  <td className="px-4 py-2">{standing.Driver.nationality} </td>
-                  <td className="px-4 py-2">
-                    {standing.Constructors[0]?.name}
-                  </td>
-                  <td className="px-4 py-2 font-semibold">
-                    {standing.points || "N/A"}
-                  </td>
-                </tr>
-              ))}
+              .map((standing, index) => {
+                const teamName = standing.Constructors[0]?.name;
+                const backgroundColor = teamColors[teamName] || "bg-gray-500"; // Standardfärg om ingen matchning finns
+
+                return (
+                  <tr
+                    key={standing.Driver.driverId}
+                    className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
+                  >
+                    <td className="px-5 py-4 ">{standing.position}</td>
+                    <td className="px-4 py-2">
+                      {standing.Driver.givenName} {standing.Driver.familyName}
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="flex items-center">
+                        {flagData[standing.Driver.nationality] ? (
+                          <img
+                            src={flagData[standing.Driver.nationality]}
+                            alt={standing.Driver.nationality}
+                            className="w-6 h-4 mr-2"
+                          />
+                        ) : null}
+                        <span>{standing.Driver.nationality}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div
+                        className="px-2 py-0.5 rounded-lg inline-block text-white"
+                        style={{ backgroundColor }}
+                      >
+                        {standing.Constructors[0]?.name}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2 font-semibold">
+                      {standing.points || "N/A"}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       )}
