@@ -1,7 +1,8 @@
 import { useAPI } from "../Context/useAPI";
 import { teamColors } from "../TeamColors";
-import CustomMap from "./CustomMap";
-import PitstopChart from "./PitstopChart";
+import { countrysData } from "../countrysData";
+import CustomMap from "./CustomMap/CustomMap";
+import PitstopChart from "./Pitstopchart/PitstopChart";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import homeDriver2 from "../Images/homeDriver.png";
@@ -42,14 +43,19 @@ const Home = () => {
   }, [selectedRace, selectedRaceData]); // Uppdatera när selectedRace eller selectedRaceData ändras
 
   return (
-    <div className=" w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5">
-      <div className="flex justify-between gap-4 h-[50px]">
+    <div className=" w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5 justify-center p-4 md:p-0">
+      <div className="flex flex-col md:flex-row justify-between gap-4 h-[50px]">
         <Link to="/standings" className="flex flex-1">
-          <div className="bg-[#E10600] flex-1 rounded-lg pl-4 flex items-center text-white border border-transparent hover:border-blue-700 hover:bg-[#b44545] transition-all duration-300">
+          <div className="bg-[#E10600] flex-1 rounded-lg pl-4 flex items-center gap-2 text-white border border-transparent hover:border-blue-700 hover:bg-[#b44545] transition-all duration-300">
             <p className="font-semibold">View Standings</p>
+            <span
+              style={{ fontSize: "30px", fontWeight: "bold", color: "white" }}
+            >
+              &#8594;
+            </span>
           </div>
         </Link>
-        <div className="relative  flex-1 rounded-md" ref={dropdownRef}>
+        <div className="relative flex-1 rounded-md" ref={dropdownRef}>
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="border border-gray-300  h-full rounded-lg w-full px-3 pr-5 font-semibold flex items-center justify-between cursor-pointer "
@@ -70,18 +76,21 @@ const Home = () => {
                 return (
                   <li
                     key={race.Circuit.circuitId}
-                    className={`px-4 py-2 cursor-pointer ${
+                    className={`px-4 py-2 ${
                       isFutureRace
-                        ? "text-gray-500 cursor-not-allowed"
-                        : "hover:bg-gray-700"
+                        ? "text-gray-500 cursor-default hover:bg-white" // Hindrar pekaren och gör texten grå för framtida race
+                        : "cursor-pointer " // Gör den klickbar för race som inte är framtida
                     } ${
                       selectedRace === race.Circuit.circuitId
-                        ? "bg-gray-700 text-white"
-                        : ""
+                        ? "bg-[#E10600] text-white hover:bg-[#E10600]"
+                        : "bg-white hover:bg-gray-200"
                     }`}
-                    onClick={() =>
-                      !isFutureRace && setSelectedRace(race.Circuit.circuitId)
-                    }
+                    onClick={() => {
+                      // Bara tillåta att ett klick görs om det inte är ett framtida race
+                      if (!isFutureRace) {
+                        setSelectedRace(race.Circuit.circuitId);
+                      }
+                    }}
                   >
                     <span className="font-bold">{race.round}</span> -{" "}
                     {race.raceName}{" "}
@@ -101,21 +110,21 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex gap-7 flex-1 text-white">
-        <div className="flex flex-col gap-3 flex-1">
-          <div className="flex gap-4">
+      <div className="h-auto flex flex-col md:flex-row gap-7 flex-1 text-white mt-20 md:mt-0">
+        <div className="h-auto flex flex-col gap-3 flex-1 ">
+          <div className="flex flex-col md:flex-row gap-4">
             {results.length === 0 ? (
               <p className="text-center w-full">No results yet</p>
             ) : (
               results.slice(0, 3).map((driver, index) => {
                 const teamName = driver.Constructor.name;
-                const teamColor = teamColors[teamName] || "bg-gray-500"; // Standardfärg om teamet saknas
+                const teamColor = teamColors[teamName] || "bg-gray-500";
 
                 return (
                   <div
                     key={index}
                     style={{ backgroundColor: teamColor }}
-                    className="font-sans relative h-[150px] w-[300px] rounded-2xl flex flex-col gap-2 justify-start items-center p-7 text-white shadow-md"
+                    className="font-sans relative min-h-[180px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-start items-center p-7 text-white shadow-md"
                   >
                     <p className="text-lg font-semibold">
                       {driver.Driver.givenName} {driver.Driver.familyName}
@@ -123,7 +132,7 @@ const Home = () => {
                     <p className="font-semibold text-2xl">
                       {driver.Constructor.name}
                     </p>
-                    <div className="absolute bg-[#27272A]/50  backdrop-blur-lg w-[98%] bottom-1 h-[40px] rounded-2xl border border-gray-500 flex flex-col justify-center">
+                    <div className="absolute bg-[#27272A]/50 backdrop-blur-lg w-[99%] bottom-0.5 h-[45px] rounded-2xl border border-gray-500 flex flex-col justify-center">
                       <div className="p-2 px-4 flex justify-between items-center text-white font-bold">
                         <p className="bg-[#27272A] backdrop-blur px-5 py-[2px] rounded-lg text-white">
                           {driver.Driver.code}
@@ -137,9 +146,9 @@ const Home = () => {
               })
             )}
           </div>
-          <div className="bg-gradient-to-r from-purple-900 via-purple-800 to-purple-700 text-white font-mono w-full p-4 rounded-2xl h-[40px] flex items-center mt-2 border border-gray-400 shadow-lg">
+          <div className="h-auto bg-gradient-to-r from-purple-900 via-purple-800 to-purple-700 text-white font-mono w-full p-4 rounded-2xl md:h-[40px] flex items-center mt-2 border border-gray-400 shadow-lg">
             {fastestLap ? (
-              <div className="w-full flex items-center justify-between">
+              <div className="w-full flex flex-col md:flex-row gap-2 md:gap-0 items-center justify-between">
                 <h1 className="font-bold text-2xl uppercase">Fastest Lap</h1>
                 <div className="flex gap-10 justify-between mx-2">
                   <div className="flex gap-2 items-center">
@@ -160,14 +169,23 @@ const Home = () => {
 
           <div className="mt-2 text-black">
             {selectedRaceData ? (
-              <div className="w-full bg-[#f3f4f6] flex flex-col gap-4 p-4 rounded-lg border">
-                <div className="flex justify-between">
+              <div className="h-[700px] w-full bg-[#f3f4f6] flex flex-col gap-4 p-0 md:p-4 rounded-lg border">
+                <div className="flex gap-2 items-center p-4 md:p-0">
+                  {countrysData[selectedRaceData.Circuit.Location.country] ? (
+                    <img
+                      src={
+                        countrysData[selectedRaceData.Circuit.Location.country]
+                      }
+                      alt={selectedRaceData.Circuit.Location.country}
+                      className="w-14 h-10 rounded-lg"
+                    />
+                  ) : null}
                   <p className="font-semibold text-3xl">
                     {selectedRaceData.raceName} {selectedRaceData.season}
                   </p>
                 </div>
 
-                <div className="w-full h-[525px] flex gap-4">
+                <div className="w-full h-[525px] flex flex-col md:flex-row gap-4">
                   {raceLocation?.lat && raceLocation?.long ? (
                     <div className="flex-1">
                       <CustomMap
@@ -182,7 +200,7 @@ const Home = () => {
                     <p>No location available</p>
                   )}
 
-                  <div className="flex-shrink-0 w-[300px] flex flex-col justify-start gap-4">
+                  <div className="flex-shrink-0 md:w-[300px] flex flex-col justify-start gap-4">
                     <p className="p-1 px-3 rounded-2xl text-lg text-center">
                       {" "}
                       {selectedRaceData.Circuit.circuitName}
@@ -214,7 +232,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="h-auto w-[320px] flex flex-col gap-5">
+        <div className="h-auto w-full md:w-[320px] flex flex-col gap-5 mb-5 md:mb-0">
           <div className="overflow-x-auto">
             <table className="table-auto w-full border-collapse">
               <thead>

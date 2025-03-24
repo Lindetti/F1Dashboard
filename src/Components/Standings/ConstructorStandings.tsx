@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { teamColors } from "../TeamColors";
+import { teamColors } from "../../TeamColors";
 
 interface ConstructorStanding {
   Constructor: {

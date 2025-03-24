@@ -22,6 +22,7 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
           `https://api.jolpi.ca/ergast/f1/${year}/races.json`
         );
         const data: RaceResponse = await response.json();
+        console.log(data);
 
         if (data.MRData.RaceTable.Races.length > 0) {
           // Sortera racen efter datum i fallande ordning (nyaste först)
