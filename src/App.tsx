@@ -3,6 +3,7 @@ import { APIProvider } from "./Context/APIProvider";
 import Navbar from "./Components/Navbar";
 import Home from "./Components/Home";
 import Standings from "./Components/Standings";
+import Drivers from "./Components/Drivers/Drivers";
 import DriverInfo from "./Components/DriverInfo/DriverInfo";
 import Footer from "./Components/Footer";
 
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/standings" element={<Standings />} />
+          <Route path="/drivers" element={<Drivers />} />
           <Route path="/driver" element={<DriverInfo />} />
         </Routes>
         <Footer />
