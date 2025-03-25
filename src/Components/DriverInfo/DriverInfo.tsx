@@ -72,6 +72,8 @@ const DriverInfo = () => {
             (driver: DriverInfo) => driver.Driver.driverId === driverId
           );
 
+        console.log(driver);
+
         if (driver) {
           setDriverData(driver);
         } else {
@@ -132,7 +134,7 @@ const DriverInfo = () => {
 
   return (
     <div className="md:w-4/6 min-h-screen">
-      <div className="relative bg-white h-[750px] shadow-lg rounded-lg rounded-bl-2xl flex justify-between border border-gray-200">
+      <div className="relative bg-white h-[700px] shadow-lg rounded-lg rounded-bl-2xl flex justify-between border border-gray-200">
         <div className="flex flex-col gap-8 flex-1 p-8">
           <div>
             <h1 className="font-semibold text-lg italic text-gray-500">
@@ -155,6 +157,7 @@ const DriverInfo = () => {
             </p>
           </div>
           <div className="flex gap-10">
+            <div className="bg-gray-500 w-[2px]"></div>
             <div className="flex flex-col gap-1 flex-1">
               <p className=" text-gray-500 font-semibold">Personal info</p>
               <div className="flex justify-between">
@@ -180,6 +183,8 @@ const DriverInfo = () => {
                 <p className="font-semibold">{driverData.Driver.dateOfBirth}</p>
               </div>
             </div>
+
+            <div className="bg-gray-500 w-[2px]"></div>
             <div className="flex flex-col gap-1 flex-1">
               <p className=" text-gray-500 font-semibold">Season stats</p>
               <div className="flex justify-between">
@@ -203,6 +208,22 @@ const DriverInfo = () => {
                 </p>
               </div>
             </div>
+
+            <div className="bg-gray-500 w-[2px]"></div>
+
+            <div className="flex flex-1 justify-center items-center">
+              <div className="flex flex-col gap-2">
+                <p className=" text-gray-500 font-semibold">Career</p>
+                <a
+                  className="underline text-red-600"
+                  href={driverData.Driver.url}
+                  target="_blank"
+                >
+                  View full career history
+                </a>
+              </div>
+            </div>
+            <div className="bg-gray-500 w-[2px]"></div>
           </div>
 
           <div className="absolute left-0 bottom-0 w-[280px] h-[220px] z-0">
@@ -226,14 +247,6 @@ const DriverInfo = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="flex-1 flex items-center justify-center p-4">
-          <iframe
-            src={driverData.Driver.url}
-            className="w-full h-full "
-            title="Wikipedia"
-          ></iframe>
         </div>
       </div>
     </div>
