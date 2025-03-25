@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { flagData } from "../../flagData";
+import { teamColors } from "../../TeamColors";
+import { useNavigate } from "react-router-dom";
 
 interface Drivers {
   Driver: {
@@ -17,6 +20,7 @@ interface Drivers {
 }
 
 const Drivers = () => {
+  const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
   const [drivers, setDrivers] = useState<Drivers[]>([]);
@@ -25,6 +29,10 @@ const Drivers = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const yearOptions = Array.from({ length: 10 }, (_, i) => currentYear - i);
+
+  const handleDriverClick = (driverId: string) => {
+    navigate(`/driver/${driverId}`, { state: { selectedYear } });
+  };
 
   useEffect(() => {
     const fetchDriverStandings = async () => {
@@ -72,14 +80,14 @@ const Drivers = () => {
   }
 
   return (
-    <div className="md:w-4/6 min-h-screen flex flex-col gap-2 mb-5 text-black">
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between border-t-[12px] border-r-[12px] py-4 pr-4 border-gray-800 rounded-tr-3xl">
+    <div className="md:w-4/6 min-h-screen flex flex-col gap-2 mb-5 text-black items-center ">
+      <div className=" flex flex-col gap-8">
+        <div className="flex justify-between border-t-[10px] border-r-[10px] py-4 pr-3 border-gray-800 rounded-tr-3xl">
           <h1 className="font-semibold text-4xl">F1 Drivers 2025</h1>
           <div ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="bg-white border border-gray-400 flex items-center justify-between p-2 rounded-md cursor-pointer w-[150px] h-[40px] z-10"
+              className="bg-white border border-gray-400 flex items-center justify-between p-2 rounded-md rounded-tr-2xl cursor-pointer w-[150px] h-[40px] z-10"
             >
               {selectedYear === currentYear
                 ? "Current Season"
@@ -108,18 +116,34 @@ const Drivers = () => {
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <div>
-            <h1 className="font-semibold text-2xl">Driver Profiles</h1>
-            <p>2025 season Drivers</p>
+        <div className="flex flex-col gap-8">
+          <div className="bg-[#E10600] p-4 rounded-sm text-white">
+            <h1 className="font-semibold">
+              Seasons 2025 drivers, current positions, points
+            </h1>
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center ">
             {drivers.slice(0, 20).map((driver) => {
+              const teamName = driver.Constructors[0]?.name;
+              const backgroundColor = teamColors[teamName] || "#808080";
+
               return (
                 <div
                   key={driver.Driver.driverId}
-                  className="w-[250px] h-[230px] flex-grow p-4 border-t-[15px] rounded-tl-lg rounded-tr-lg"
+                  className="w-[250px] h-[230px] flex-grow p-4 rounded-tl-lg rounded-tr-lg 
+                           border-t-[15px] border-b-2 bg-white border-b-gray-200 transition-all 
+                           duration-300 ease-in-out shadow-md hover:shadow-lg cursor-pointer"
+                  style={{
+                    borderTopColor: "#808080", // Standardfärg (grå)
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.borderTopColor = backgroundColor)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.borderTopColor = "#808080")
+                  }
+                  onClick={() => handleDriverClick(driver.Driver.driverId)}
                 >
                   <div className="flex flex-col gap-4">
                     <div className="flex justify-between items-center">
@@ -130,7 +154,10 @@ const Drivers = () => {
                         {driver.position}
                       </p>
                     </div>
-                    <div>
+                    <div
+                      className="w-fit text-center text-white rounded-lg px-2"
+                      style={{ backgroundColor }}
+                    >
                       <p>{driver.Constructors[0]?.name}</p>
                     </div>
                     <div className="flex flex-col gap-1">
@@ -142,9 +169,18 @@ const Drivers = () => {
                       </div>
                       <div className="flex justify-between text-sm text-gray-600">
                         <p>Nationality</p>
-                        <p className="text-black font-semibold">
-                          {driver.Driver.nationality}
-                        </p>
+                        <div className="flex items-center">
+                          {flagData[driver.Driver.nationality] ? (
+                            <img
+                              src={flagData[driver.Driver.nationality]}
+                              alt={driver.Driver.nationality}
+                              className="w-4 h-3 mr-2"
+                            />
+                          ) : null}
+                          <p className="text-black font-semibold">
+                            {driver.Driver.nationality}
+                          </p>
+                        </div>
                       </div>
                       <div className="flex justify-between text-sm text-gray-600">
                         <p>Points</p>
