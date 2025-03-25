@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/standings" element={<Standings />} />
           <Route path="/drivers" element={<Drivers />} />
-          <Route path="/driver" element={<DriverInfo />} />
+          <Route path="/driver/:driverId" element={<DriverInfo />} />
         </Routes>
         <Footer />
       </div>
