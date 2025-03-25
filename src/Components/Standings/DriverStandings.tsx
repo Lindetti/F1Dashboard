@@ -31,6 +31,7 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
           `https://api.jolpi.ca/ergast/f1/${selectedYear}/driverstandings.json`
         );
         const data = await response.json();
+        console.log(data);
 
         if (data.MRData.StandingsTable.StandingsLists.length > 0) {
           setDriverStandings(

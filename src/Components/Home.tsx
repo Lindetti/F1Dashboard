@@ -124,7 +124,7 @@ const Home = () => {
                   <div
                     key={index}
                     style={{ backgroundColor: teamColor }}
-                    className="font-sans relative min-h-[180px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-start items-center p-7 text-white shadow-md"
+                    className="font-sans relative min-h-[170px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-start items-center p-7 text-white shadow-md"
                   >
                     <p className="text-lg font-semibold">
                       {driver.Driver.givenName} {driver.Driver.familyName}
@@ -167,10 +167,10 @@ const Home = () => {
             )}
           </div>
 
-          <div className="mt-2 text-black">
+          <div className="mt-2 text-black ">
             {selectedRaceData ? (
-              <div className="h-[700px] w-full bg-[#f3f4f6] flex flex-col gap-4 p-0 md:p-4 rounded-lg border">
-                <div className="flex gap-2 items-center p-4 md:p-0">
+              <div className="h-[620px] w-full bg-white flex flex-col gap-0 md:gap-4 p-0 md:p-4 rounded-lg border">
+                <div className="flex gap-2 items-center p-4 md:p-0 ">
                   {countrysData[selectedRaceData.Circuit.Location.country] ? (
                     <img
                       src={
@@ -180,7 +180,7 @@ const Home = () => {
                       className="w-14 h-10 rounded-lg"
                     />
                   ) : null}
-                  <p className="font-semibold text-3xl">
+                  <p className="font-semibold text-lg md:text-3xl">
                     {selectedRaceData.raceName} {selectedRaceData.season}
                   </p>
                 </div>
@@ -226,7 +226,7 @@ const Home = () => {
               <p>No race selected</p>
             )}
           </div>
-          <div className="flex flex-col gap-5 bg-[#f3f4f6] p-4 rounded-lg border text-black">
+          <div className="flex flex-col gap-5 bg-white p-4 rounded-lg border text-black">
             <h2 className="font-semibold text-2xl">Pitstops</h2>
             <PitstopChart selectedRaceData={selectedRaceData} />
           </div>
