@@ -45,8 +45,8 @@ const Home = () => {
   }, [selectedRace, selectedRaceData]);
 
   return (
-    <div className="w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5 justify-center p-2 md:p-0">
-      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-2 md:p-0">
+    <div className="w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5 justify-center p-4 md:p-0">
+      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-4 md:p-0">
         {" "}
         <div
           onClick={() => setView("standings")}
@@ -103,14 +103,17 @@ const Home = () => {
         )}
         {view === "home" && (
           <div className="relative h-full flex-1 rounded-md" ref={dropdownRef}>
+            {" "}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="border border-gray-700 text-gray-300 h-full rounded-lg w-full px-4 font-semibold flex items-center justify-between cursor-pointer hover:bg-[#20202D] hover:text-white transition-all duration-300"
+              className="border border-gray-700 text-gray-300 h-[50px] rounded-md w-full pl-4 font-semibold flex items-center justify-between cursor-pointer hover:bg-[#20202D] hover:text-white transition-all duration-300"
             >
-              {races.find((race) => race.Circuit.circuitId === selectedRace)
-                ?.raceName || "No race found"}
-              <span className="text-gray-400">▼</span>
-            </button>{" "}
+              <p className="font-semibold">
+                {races.find((race) => race.Circuit.circuitId === selectedRace)
+                  ?.raceName || "No race found"}
+              </p>
+              <span className="text-white text-sm font-semibold pr-4">▼</span>
+            </button>
             {isOpen && (
               <ul className="absolute w-full bg-[#1A1A24] text-gray-300 mt-2 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto border border-gray-700">
                 {races.map((race) => {
@@ -133,6 +136,7 @@ const Home = () => {
                       onClick={() => {
                         if (!isFutureRace) {
                           setSelectedRace(race.Circuit.circuitId);
+                          setIsOpen(false);
                         }
                       }}
                     >
@@ -153,9 +157,9 @@ const Home = () => {
       </div>
 
       {view === "home" ? (
-        <div className="h-auto flex flex-col md:flex-row gap-7 flex-1 text-white mt-5 md:mt-0">
+        <div className="h-auto flex flex-col md:flex-row gap-7 flex-1 text-white mt-5 md:mt-0 p-4 md:p-0">
           <div className="h-auto flex flex-col gap-3 flex-1">
-            <div className="flex flex-col md:flex-row gap-4 p-2 md:p-0">
+            <div className="flex flex-col md:flex-row gap-4">
               <div className="flex gap-2 items-center justify-center mb-2 md:hidden">
                 <img
                   src={
@@ -203,7 +207,7 @@ const Home = () => {
                 })
               )}
             </div>
-            <div className="h-auto bg-gradient-to-r from-purple-900 via-purple-800 to-purple-700 text-white font-mono w-full p-4 rounded-2xl md:h-[40px] flex items-center mt-2 border border-gray-400 shadow-lg">
+            <div className="h-auto bg-gradient-to-r from-purple-900 via-purple-800 to-purple-700 text-white font-mono w-full p-2 rounded-2xl md:h-[40px] flex items-center mt-2 border border-gray-400 shadow-lg">
               {fastestLap ? (
                 <div className="w-full flex flex-col md:flex-row gap-2 md:gap-0 items-center justify-between">
                   <h1 className="font-bold text-2xl uppercase">Fastest Lap</h1>
@@ -222,6 +226,88 @@ const Home = () => {
               ) : (
                 <p>No fastest lap data</p>
               )}
+            </div>
+
+            <div className="block md:hidden mt-2">
+              <div className="overflow-x-auto">
+                <table className="table-auto w-full border-collapse">
+                  <thead>
+                    <tr className="bg-[#15151E] border border-gray-700 text-gray-300 rounded-3xl">
+                      <th className="rounded-l-md px-4 py-2">Position</th>
+                      <th className="px-4 py-2">Driver</th>
+                      <th className="rounded-r-md px-4 py-2">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {results.map((driver, index) => {
+                      const teamName = driver.Constructor.name;
+                      const teamColor = teamColors[teamName] || "bg-gray-500";
+
+                      return (
+                        <tr
+                          key={index}
+                          className={`text-center font-semibold ${
+                            index % 2 !== 0 ? "bg-[#1A1A24]" : "bg-[#20202D]"
+                          } ${
+                            driver.position === "1"
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }`}
+                        >
+                          <td
+                            className={`border-l border-b border-gray-700 px-4 py-2 ${
+                              index % 2 !== 0 ? "rounded-l-lg" : ""
+                            }`}
+                          >
+                            {driver.position}
+                          </td>
+                          <td
+                            className={`flex items-center gap-2 px-4 py-2 relative border-b border-gray-700`}
+                          >
+                            <div
+                              style={{ backgroundColor: teamColor }}
+                              className="w-[5px] h-[15px]"
+                            ></div>
+                            <div className="relative group">
+                              <div className="cursor-default">
+                                {driver.Driver.code}
+                              </div>
+                              <div className="absolute w-32 border border-gray-700 left-full top-1/2 transform -translate-y-1/2 ml-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+                                {driver.Driver.givenName}{" "}
+                                {driver.Driver.familyName}
+                              </div>
+                            </div>
+                          </td>
+                          <td
+                            className={`border-r border-b border-gray-700 px-4 py-2 ${
+                              index % 2 !== 0 ? "rounded-r-lg" : ""
+                            }`}
+                          >
+                            {driver.Time
+                              ? driver.Time.time
+                              : driver.status &&
+                                (driver.status.includes("Water pressure") ||
+                                  driver.status.includes("Gearbox") ||
+                                  driver.status.includes("Engine") ||
+                                  driver.status.includes("Collision") ||
+                                  driver.status.includes("Spun off") ||
+                                  driver.status.includes("Accident") ||
+                                  driver.status.includes("Withdrew") ||
+                                  driver.status.includes("Disqualified") ||
+                                  driver.status.includes("Overheating") ||
+                                  driver.status.includes("Brakes") ||
+                                  driver.status.includes("Power Unit") ||
+                                  driver.status.includes("Retired") ||
+                                  driver.status.includes("Radiator"))
+                              ? "DNF"
+                              : driver.status}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div className="mt-2 text-gray-300">
@@ -288,9 +374,8 @@ const Home = () => {
               <h2 className="font-semibold text-2xl">Pitstops</h2>
               <PitstopChart selectedRaceData={selectedRaceData} />
             </div>
-          </div>
-
-          <div className="h-auto w-full md:w-[320px] flex flex-col gap-5 mb-5 md:mb-0">
+          </div>{" "}
+          <div className="h-auto w-full md:w-[320px] flex flex-col gap-5 mb-5 md:mb-0 hidden md:flex">
             <div className="overflow-x-auto">
               <table className="table-auto w-full border-collapse">
                 <thead>
@@ -389,11 +474,11 @@ const Home = () => {
           </div>
         </div>
       ) : view === "standings" ? (
-        <div className="w-full px-4 md:px-0">
+        <div className="w-full p-4 md:p-0">
           <Standings />
         </div>
       ) : view === "driver" ? (
-        <div className="w-full px-4 md:px-0">
+        <div className="w-full p-4 md:p-0">
           <Drivers />
         </div>
       ) : null}

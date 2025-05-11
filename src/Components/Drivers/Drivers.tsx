@@ -102,7 +102,7 @@ const Drivers = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="w-full min-h-screen flex flex-col gap-2 mb-5 text-black items-center px-4 md:px-0">
+    <div className="w-full min-h-screen flex flex-col gap-2 mb-5 text-black items-center">
       <div className="w-full flex flex-col gap-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-t-[10px] border-r-[10px] py-4 pr-3 border-[#20202D] rounded-tr-3xl">
           <h1 className="font-bold text-3xl md:text-5xl text-gray-400">
@@ -111,7 +111,7 @@ const Drivers = () => {
           <div ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="border border-gray-700 text-gray-300 flex items-center justify-between p-2 rounded-md rounded-tr-2xl cursor-pointer w-full md:w-[150px] h-[40px] z-10"
+              className="border border-gray-700 text-gray-300 flex items-center justify-between p-2 rounded-md rounded-tr-2xl cursor-pointer w-[250px] md:w-[150px] h-[40px] z-10"
             >
               {selectedYear === currentYear
                 ? "Current Season"
@@ -142,9 +142,9 @@ const Drivers = () => {
         </div>
 
         <div className="flex flex-col gap-8">
-          <div className="bg-[#8B0000] p-4 rounded-sm text-white">
-            <h1 className="font-semibold text-sm md:text-base">
-              {selectedYear} drivers, current positions, points
+          <div className="bg-[#8B0000] p-4 rounded-sm text-white rounded-tl-lg rounded-tr-lg">
+            <h1 className="font-semibold text-sm md:text-base text-center md:text-left">
+              {selectedYear} drivers, current positions and points
             </h1>
           </div>
 
