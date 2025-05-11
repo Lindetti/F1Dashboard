@@ -47,62 +47,70 @@ const ConstructorStandings = ({ selectedYear }: ConstructorStandingsProps) => {
   }, [selectedYear]);
 
   return (
-    <div className="bg-white p-5 rounded-tl-lg rounded-b-lg shadow-lg border">
+    <div className="rounded-tl-lg rounded-b-lg shadow-lg border border-gray-700 overflow-x-auto">
       {loading ? (
         <div className="text-center text-xl py-10">Loading...</div>
       ) : (
-        <table className="w-full table-auto">
-          <thead className="bg-white text-left uppercase border-b border-gray-500">
-            <tr>
-              <th className="border-b-0 px-4 py-5">Pos</th>
-              <th className="px-4 py-2">Constructor</th>
-              <th className="px-4 py-2">PTS</th>
-              <th className="px-4 py-2">Wins</th>
-            </tr>
-          </thead>
-          <tbody>
-            {constructorStandings.map((standing, index) => {
-              const teamName = standing.Constructor.name;
-              const backgroundColor = teamColors[teamName] || "white";
+        <div className="min-w-[600px] md:w-full">
+          {" "}
+          {/* Minimum width for mobile scrolling */}
+          <table className="w-full table-auto">
+            <thead className="text-left uppercase border-b border-gray-500">
+              <tr className="text-gray-300">
+                <th className="border-b-0 px-8 py-5 whitespace-nowrap">Pos</th>
+                <th className="px-4 py-2 whitespace-nowrap">Constructor</th>
+                <th className="px-4 py-2 whitespace-nowrap">PTS</th>
+                <th className="px-4 py-2 whitespace-nowrap">Wins</th>
+              </tr>
+            </thead>
+            <tbody>
+              {constructorStandings.map((standing, index) => {
+                const teamName = standing.Constructor.name;
+                const backgroundColor = teamColors[teamName] || "white";
 
-              return (
-                <tr
-                  key={standing.position}
-                  className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
-                >
-                  <td className="px-5 py-4 ">{standing.position}</td>
-                  <td className="px-4 py-2">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex gap-2">
-                        <div
-                          className="h-[30px] w-[5px]"
-                          style={{ backgroundColor }}
-                        ></div>
-                        <p
-                          style={{ backgroundColor }}
-                          className="text-white text-sm font-semibold text-center p-1 rounded-lg"
-                        >
-                          {" "}
-                          {standing.Constructor.name}
+                return (
+                  <tr
+                    key={standing.position}
+                    className={
+                      index % 2 === 0
+                        ? "bg-[#1A1A24] text-gray-300"
+                        : "bg-[#20202D] text-gray-300"
+                    }
+                  >
+                    <td className="px-10 py-4 whitespace-nowrap">
+                      {standing.position}
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="flex flex-col gap-1 min-w-[200px]">
+                        <div className="flex gap-2">
+                          <div
+                            className="h-[30px] w-[5px]"
+                            style={{ backgroundColor }}
+                          ></div>
+                          <p
+                            style={{ backgroundColor }}
+                            className="text-white text-sm font-semibold flex items-center px-2 rounded-lg whitespace-nowrap"
+                          >
+                            {standing.Constructor.name}
+                          </p>
+                        </div>
+                        <p className="text-gray-400 text-sm font-semibold">
+                          {standing.Constructor.nationality}
                         </p>
                       </div>
-                      <p className="text-gray-500 text-sm font-semiold">
-                        {" "}
-                        {standing.Constructor.nationality}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="px-4 py-2 font-semibold">
-                    {standing.points || "N/A"}
-                  </td>
-                  <td className="px-4 py-2 font-semibold">
-                    {standing.wins || "N/A"}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    </td>
+                    <td className="px-4 py-2 font-semibold whitespace-nowrap">
+                      {standing.points || "N/A"}
+                    </td>
+                    <td className="px-8 py-2 font-semibold whitespace-nowrap">
+                      {standing.wins || "N/A"}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

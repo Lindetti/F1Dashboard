@@ -51,64 +51,74 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
   }, [selectedYear]);
 
   return (
-    <div className="bg-white p-5 rounded-tl-lg rounded-b-lg shadow-lg border">
+    <div className="rounded-tl-lg rounded-b-lg shadow-lg border border-gray-700 overflow-x-auto">
       {loading ? (
         <div className="text-center text-xl py-10">Loading...</div>
       ) : (
-        <table className="w-full table-auto relative">
-          <thead className="bg-white text-left uppercase border-b border-gray-500">
-            <tr>
-              <th className="border-b-0 px-4 py-5">Pos</th>
-              <th className="px-4 py-2">Driver</th>
-              <th className="px-4 py-2">Nationality</th>
-              <th className="px-4 py-2">Constructor</th>
-              <th className="px-4 py-2">PTS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {driverStandings
-              .filter((standing) => !isNaN(Number(standing.position))) // Filtrera bort de utan giltig position
-              .map((standing, index) => {
-                const teamName = standing.Constructors[0]?.name;
-                const backgroundColor = teamColors[teamName] || "bg-gray-500"; // Standardfärg om ingen matchning finns
+        <div className="min-w-[600px] md:w-full">
+          {" "}
+          {/* Minimum width for mobile scrolling */}
+          <table className="w-full table-auto">
+            <thead className="text-left uppercase border-b border-gray-500">
+              <tr className="text-gray-300">
+                <th className="border-b-0 px-7 py-5 whitespace-nowrap">Pos</th>
+                <th className="px-4 py-2 whitespace-nowrap">Driver</th>
+                <th className="px-4 py-2 whitespace-nowrap">Nationality</th>
+                <th className="px-4 py-2 whitespace-nowrap">Constructor</th>
+                <th className="px-4 py-2 whitespace-nowrap">PTS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {driverStandings
+                .filter((standing) => !isNaN(Number(standing.position)))
+                .map((standing, index) => {
+                  const teamName = standing.Constructors[0]?.name;
+                  const backgroundColor = teamColors[teamName] || "bg-gray-500";
 
-                return (
-                  <tr
-                    key={standing.Driver.driverId}
-                    className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
-                  >
-                    <td className="px-5 py-4 ">{standing.position}</td>
-                    <td className="px-4 py-2">
-                      {standing.Driver.givenName} {standing.Driver.familyName}
-                    </td>
-                    <td className="px-4 py-2">
-                      <div className="flex items-center">
-                        {flagData[standing.Driver.nationality] ? (
-                          <img
-                            src={flagData[standing.Driver.nationality]}
-                            alt={standing.Driver.nationality}
-                            className="w-6 h-4 mr-2"
-                          />
-                        ) : null}
-                        <span>{standing.Driver.nationality}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-2">
-                      <div
-                        className="px-2 py-0.5 rounded-lg inline-block text-white"
-                        style={{ backgroundColor }}
-                      >
-                        {standing.Constructors[0]?.name}
-                      </div>
-                    </td>
-                    <td className="px-4 py-2 font-semibold">
-                      {standing.points || "N/A"}
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                  return (
+                    <tr
+                      key={standing.Driver.driverId}
+                      className={
+                        index % 2 === 0
+                          ? "bg-[#1A1A24] text-gray-300"
+                          : "bg-[#20202D] text-gray-300"
+                      }
+                    >
+                      <td className="px-10 py-4 whitespace-nowrap">
+                        {standing.position}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap min-w-[180px]">
+                        {standing.Driver.givenName} {standing.Driver.familyName}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap min-w-[150px]">
+                        <div className="flex items-center">
+                          {flagData[standing.Driver.nationality] ? (
+                            <img
+                              src={flagData[standing.Driver.nationality]}
+                              alt={standing.Driver.nationality}
+                              className="w-6 h-4 mr-2"
+                            />
+                          ) : null}
+                          <span>{standing.Driver.nationality}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap min-w-[150px]">
+                        <div
+                          className="px-2 py-0.5 rounded-lg inline-block text-white"
+                          style={{ backgroundColor }}
+                        >
+                          {standing.Constructors[0]?.name}
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 font-semibold whitespace-nowrap">
+                        {standing.points || "N/A"}
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

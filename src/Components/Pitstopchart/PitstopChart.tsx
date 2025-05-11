@@ -113,7 +113,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
     borderColor: "gray", // Linjen är neutral (grå)
     backgroundColor: pitstops.map((pitstop) => {
       const team = drivers[pitstop.driverId] || "Unknown";
-      const color = teamColors[team] || "black"; // Om team inte finns i teamColors, sätt till svart
+      const color = teamColors[team] || "white"; // Om team inte finns i teamColors, sätt till svart
       return color;
     }),
     fill: false,
@@ -137,28 +137,38 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
           display: false,
           padding: 10,
         },
+        ticks: {
+          color: "rgb(209 213 219)", // text-gray-300 equivalent
+        },
+        grid: {
+          color: "rgb(209 213 219 / 0.1)", // Subtle grid lines
+        },
       },
       y: {
         type: "linear",
         position: "left",
         title: {
           display: true,
-          text: "Lap", // Etiketten på vänstra y-axeln
+          text: "Lap",
           font: {
-            size: 16, // Ändra storlek på texten
-            family: "'Arial', sans-serif", // Sätt en specifik fontfamilj
-            weight: "bold", // Ställ in fontvikt (t.ex. "bold", "normal")
+            size: 16,
+            family: "'Arial', sans-serif",
+            weight: "bold",
           },
-          color: "black", // Ändra färg på texten
+          color: "rgb(209 213 219)", // text-gray-300 equivalent
         },
         ticks: {
           callback: (value) => value,
           padding: 30,
           font: {
-            size: 15, // Ändra fontstorlek på Lap-ticksen här
-            family: "'Arial', sans-serif", // Sätt en specifik fontfamilj
-            weight: "normal", // Sätt fontvikt
+            size: 15,
+            family: "'Arial', sans-serif",
+            weight: "normal",
           },
+          color: "rgb(209 213 219)", // text-gray-300 equivalent
+        },
+        grid: {
+          color: "rgb(209 213 219 / 0.1)", // Subtle grid lines
         },
       },
     },
@@ -187,9 +197,8 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
       </div>
     );
   }
-
   return (
-    <div className="pitstop-chart">
+    <div className="pitstop-chart bg-[#1A1A24] text-gray-300 p-4 rounded-lg">
       <Line data={chartData} options={options} />
     </div>
   );

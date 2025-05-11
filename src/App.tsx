@@ -10,7 +10,7 @@ import Footer from "./Components/Footer";
 function App() {
   return (
     <APIProvider>
-      <div className="bg-[#F9FAFB] min-h-screen flex flex-col gap-5 items-center">
+      <div className="bg-[#15151E] min-h-screen flex flex-col gap-5 items-center">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
