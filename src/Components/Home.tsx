@@ -45,8 +45,8 @@ const Home = () => {
   }, [selectedRace, selectedRaceData]);
 
   return (
-    <div className="w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5 justify-center p-4 md:p-0">
-      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px]">
+    <div className="w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5 justify-center p-2 md:p-0">
+      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-2 md:p-0">
         {" "}
         <div
           onClick={() => setView("standings")}
@@ -85,20 +85,27 @@ const Home = () => {
               &#8594;
             </span>
           </div>
-        </div>
+        </div>{" "}
         {view !== "home" && (
-          <button
+          <div
+            className="flex flex-1 cursor-pointer"
             onClick={() => setView("home")}
-            className="border border-gray-700 text-gray-300 flex-1 rounded-md pl-4 flex gap-2 items-center cursor-pointer hover:bg-[#20202D] hover:text-white transition-all duration-300 font-bold"
           >
-            Back to Dashboard
-          </button>
+            <div className="border border-gray-700 text-gray-300 flex-1 rounded-md pl-4 flex gap-2 items-center cursor-pointer transition-all duration-300 hover:bg-[#20202D] hover:text-white">
+              <p className="font-bold">Back to Dashboard</p>
+              <span
+                style={{ fontSize: "30px", fontWeight: "bold", color: "white" }}
+              >
+                &#8594;
+              </span>
+            </div>
+          </div>
         )}
         {view === "home" && (
-          <div className="relative flex-1 rounded-md" ref={dropdownRef}>
+          <div className="relative h-full flex-1 rounded-md" ref={dropdownRef}>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="border border-gray-700 text-gray-300 h-full rounded-lg w-full px-3 pr-5 font-semibold flex items-center justify-between cursor-pointer"
+              className="border border-gray-700 text-gray-300 h-full rounded-lg w-full px-4 font-semibold flex items-center justify-between cursor-pointer hover:bg-[#20202D] hover:text-white transition-all duration-300"
             >
               {races.find((race) => race.Circuit.circuitId === selectedRace)
                 ?.raceName || "No race found"}
@@ -148,7 +155,21 @@ const Home = () => {
       {view === "home" ? (
         <div className="h-auto flex flex-col md:flex-row gap-7 flex-1 text-white mt-5 md:mt-0">
           <div className="h-auto flex flex-col gap-3 flex-1">
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex flex-col md:flex-row gap-4 p-2 md:p-0">
+              <div className="flex gap-2 items-center justify-center mb-2 md:hidden">
+                <img
+                  src={
+                    countrysData[
+                      selectedRaceData?.Circuit?.Location?.country || "Unknown"
+                    ]
+                  }
+                  alt={selectedRaceData?.Circuit.Location.country}
+                  className="w-10 h-8 rounded-lg"
+                />
+                <p className="text-2xl">
+                  {selectedRaceData?.raceName || "No circuit name available"}
+                </p>
+              </div>
               {results.length === 0 ? (
                 <p className="text-center w-full">No results yet</p>
               ) : (

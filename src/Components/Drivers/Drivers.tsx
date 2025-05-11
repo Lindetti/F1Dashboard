@@ -33,19 +33,42 @@ const Drivers = () => {
   const handleDriverClick = (driverId: string) => {
     navigate(`/driver/${driverId}`, { state: { selectedYear } });
   };
-
   useEffect(() => {
     const fetchDriverStandings = async () => {
       try {
+        // Check localStorage first
+        const cacheKey = `drivers-page-${selectedYear}`;
+        const cachedData = localStorage.getItem(cacheKey);
+
+        if (cachedData) {
+          const { data, timestamp } = JSON.parse(cachedData);
+          // Cache for 6 hours
+          if (Date.now() - timestamp < 6 * 60 * 60 * 1000) {
+            setDrivers(data);
+            setLoading(false);
+            return;
+          }
+          // Cache expired, remove it
+          localStorage.removeItem(cacheKey);
+        }
+
         const response = await fetch(
           `https://api.jolpi.ca/ergast/f1/${selectedYear}/driverstandings.json`
         );
         const data = await response.json();
-        console.log(data);
 
         if (data.MRData.StandingsTable.StandingsLists.length > 0) {
-          setDrivers(
-            data.MRData.StandingsTable.StandingsLists[0].DriverStandings
+          const driversData =
+            data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+          setDrivers(driversData);
+
+          // Save to localStorage with timestamp
+          localStorage.setItem(
+            cacheKey,
+            JSON.stringify({
+              data: driversData,
+              timestamp: Date.now(),
+            })
           );
         } else {
           console.warn("No standings data available for this season.");
