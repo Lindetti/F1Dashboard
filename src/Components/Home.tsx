@@ -45,7 +45,7 @@ const Home = () => {
   }, [selectedRace, selectedRaceData]);
 
   return (
-    <div className="w-full md:w-4/6 min-h-screen flex flex-col gap-8 mb-5 justify-center p-4 md:p-0">
+    <div className="w-full md:w-4/6 min-h-screen flex flex-col gap-2 md:gap-8 mb-5 justify-center p-4 md:p-0">
       <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-4 md:p-0">
         {" "}
         <div
@@ -207,13 +207,17 @@ const Home = () => {
                 })
               )}
             </div>
-            <div className="h-auto bg-gradient-to-r from-purple-900 via-purple-800 to-purple-700 text-white font-mono w-full p-2 rounded-2xl md:h-[40px] flex items-center mt-2 border border-gray-400 shadow-lg">
+            <div className="h-auto text-white font-mono w-full p-2 rounded-2xl md:h-[40px] flex items-center mt-2 border border-gray-700 shadow-lg">
               {fastestLap ? (
                 <div className="w-full flex flex-col md:flex-row gap-2 md:gap-0 items-center justify-between">
-                  <h1 className="font-bold text-2xl uppercase">Fastest Lap</h1>
-                  <div className="flex gap-10 justify-between mx-2">
+                  <h1 className="font-bold text-2xl uppercase pl-2">
+                    Fastest Lap
+                  </h1>
+                  <div className="flex flex-col md:flex-row md:gap-10 justify-between mx-2">
                     <div className="flex gap-2 items-center">
-                      <p className="text-lg">{fastestLap.time}</p>
+                      <p className="text-lg text-yellow-500">
+                        {fastestLap.time}
+                      </p>
                       <p>-</p>
                       <p className="font-bold text-lg">
                         {fastestLap.driverCode}{" "}
@@ -312,8 +316,8 @@ const Home = () => {
 
             <div className="mt-2 text-gray-300">
               {selectedRaceData ? (
-                <div className="h-[620px] w-full bg-[#1A1A24] flex flex-col gap-0 md:gap-4 p-0 md:p-4 rounded-lg border border-gray-700">
-                  <div className="flex gap-2 items-center p-4 md:p-0">
+                <div className="h-[580px[ md:h-[600px] w-full bg-[#1A1A24] flex flex-col gap-0 md:gap-4 p-0 md:p-4 rounded-lg border border-gray-700">
+                  <div className="flex gap-2 items-center p-4 md:p-0 md:pl-2">
                     {countrysData[selectedRaceData.Circuit.Location.country] ? (
                       <img
                         src={
@@ -322,17 +326,39 @@ const Home = () => {
                           ]
                         }
                         alt={selectedRaceData.Circuit.Location.country}
-                        className="w-14 h-10 rounded-lg"
+                        className="w-10 h-7 rounded-sm hidden md:flex items-center"
                       />
                     ) : null}
-                    <p className="font-semibold text-lg md:text-3xl">
-                      {selectedRaceData.raceName} {selectedRaceData.season}
-                    </p>
+                    <div className="w-full flex justify-center md:justify-start">
+                      <p className="font-semibold text-lg md:text-3xl">
+                        {selectedRaceData.raceName} {selectedRaceData.season}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="w-full h-[525px] flex flex-col md:flex-row gap-4">
+                  <div className="w-full h-[525px] flex flex-col gap-4">
+                    <div className="flex w-full flex-col md:flex-row justify-start gap-2 mb-2">
+                      <p className="p-1 px-3 rounded-2xl text-lg text-center">
+                        | {selectedRaceData.Circuit.circuitName} |
+                      </p>
+                      <div className="flex justify-center">
+                        <p className="bg-[#3F3F46] p-1 px-3 rounded-2xl text-lg text-white">
+                          {selectedRaceData.Circuit.Location.locality},{" "}
+                          {selectedRaceData.Circuit.Location.country}
+                        </p>
+                      </div>
+                      <div className="flex justify-center">
+                        <p className="bg-[#3F3F46] font-semibold text-lg uppercase px-3 rounded-2xl text-white flex items-center">
+                          {new Date(selectedRaceData.date).toLocaleDateString(
+                            "en-GB",
+                            { month: "long", day: "numeric" }
+                          )}
+                        </p>
+                      </div>
+                    </div>
+
                     {raceLocation?.lat && raceLocation?.long ? (
-                      <div className="flex-1">
+                      <div className="flex-1 p-2">
                         <CustomMap
                           key={`${raceLocation.lat}-${raceLocation.long}`}
                           lat={raceLocation.lat}
@@ -344,26 +370,6 @@ const Home = () => {
                     ) : (
                       <p>No location available</p>
                     )}
-
-                    <div className="flex-shrink-0 md:w-[300px] flex flex-col justify-start gap-4">
-                      <p className="p-1 px-3 rounded-2xl text-lg text-center">
-                        {selectedRaceData.Circuit.circuitName}
-                      </p>
-                      <div className="flex justify-center">
-                        <p className="bg-[#3F3F46] p-1 px-3 rounded-2xl text-lg text-white">
-                          {selectedRaceData.Circuit.Location.locality},{" "}
-                          {selectedRaceData.Circuit.Location.country}
-                        </p>
-                      </div>
-                      <div className="flex justify-center">
-                        <p className="bg-[#3F3F46] font-bold text-lg uppercase font-mono p-0.5 px-3 rounded-2xl text-white">
-                          {new Date(selectedRaceData.date).toLocaleDateString(
-                            "en-GB",
-                            { month: "long", day: "numeric" }
-                          )}
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               ) : (

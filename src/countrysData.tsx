@@ -21,31 +21,44 @@ import Sweden from "./Images/Flags/swedish.png";
 import Poland from "./Images/Flags/poland.png";
 import Indonesia from "./Images/Flags/indonesia.png";
 import Belgium from "./Images/Flags/belgium.png";
-
-
+import Bahrain from "./Images/Flags/bahrain.png";
+import SaudiArbia from "./Images/Flags/saudiarabia.png";
+import Austria from "./Images/Flags/austria.png";
+import UAE from "./Images/Flags/uae.png";
+import Singapore from "./Images/Flags/Singapore.jpg";
+import Qatar from "./Images/Flags/qatar.png";
+import Azerbajian from "./Images/Flags/azerbaijan.png";
 
 export const countrysData: { [key: string]: string } = {
-    China: China,
-    USA: USA,
-    "Great Britain": British,
-    Netherlands: Netherlands,
-    Australia: Australia,
-    Italy: Italy,
-    Thailand: Thailand,
-    Germany: Germany,
-    France: France,
-    Canada: Canada,
-    Monaco: Monaco,
-    Japan: Japan,
-    Spain: Spain,
-    Brazil: Brazil,
-    "New Zealand": NewZealand,
-    Denmark: Denmark,
-    Mexico: Mexico,
-    Finland: Finland,
-    Argentina: Argentina,
-    Sweden: Sweden,
-    Poland: Poland,
-    Indonesia: Indonesia,
-    Belgium: Belgium,
-  };
+  China: China,
+  USA: USA,
+  "Great Britain": British,
+  UK: British,
+  Netherlands: Netherlands,
+  Australia: Australia,
+  Italy: Italy,
+  Thailand: Thailand,
+  Germany: Germany,
+  France: France,
+  Canada: Canada,
+  Monaco: Monaco,
+  Japan: Japan,
+  Spain: Spain,
+  Brazil: Brazil,
+  "New Zealand": NewZealand,
+  Denmark: Denmark,
+  Mexico: Mexico,
+  Finland: Finland,
+  Argentina: Argentina,
+  Sweden: Sweden,
+  Poland: Poland,
+  Indonesia: Indonesia,
+  Belgium: Belgium,
+  Bahrain: Bahrain,
+  "Saudi Arabia": SaudiArbia,
+  Austria: Austria,
+  UAE: UAE,
+  Singapore: Singapore,
+  Qatar: Qatar,
+  Azerbaijan: Azerbajian,
+};
