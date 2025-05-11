@@ -41,13 +41,13 @@ const Standings = () => {
         <div className="flex border border-gray-700 w-full md:w-[400px] h-[40px] items-center justify-center rounded-md">
           <button
             onClick={() => setView("driver")}
-            className={`w-full cursor-pointer py-1 rounded-sm ${
+            className={`w-full cursor-pointer py-1 rounded-sm  ${
               view === "driver"
                 ? "bg-[#20202D] font-semibold text-gray-300"
                 : "text-gray-400"
             }`}
           >
-            Driver Standings
+            Drivers
           </button>
           <button
             onClick={() => setView("constructor")}
@@ -57,7 +57,7 @@ const Standings = () => {
                 : "text-gray-400"
             }`}
           >
-            Constructor Standings
+            Constructors
           </button>
         </div>
 
