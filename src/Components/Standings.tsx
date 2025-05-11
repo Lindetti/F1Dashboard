@@ -28,10 +28,10 @@ const Standings = () => {
     };
   }, []);
   return (
-    <div className="w-full min-h-screen flex flex-col gap-2 mb-5 text-black">
+    <div className="w-full min-h-screen flex flex-col gap-2 mt-5 mb-5 text-black">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
         <div>
-          <h1 className="font-bold text-3xl md:text-5xl text-gray-400">
+          <h1 className="font-bold text-2xl md:text-5xl text-gray-400">
             Championship Standings
           </h1>
         </div>
@@ -64,7 +64,7 @@ const Standings = () => {
         <div ref={dropdownRef} className="w-full md:w-auto">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="border border-gray-700 text-gray-300 flex items-center justify-between px-4 rounded-md cursor-pointer w-full md:w-[150px] h-[40px] z-10"
+            className="border border-gray-700 text-gray-300 flex items-center justify-between px-4 rounded-md cursor-pointer w-full md:w-[160px] h-[40px] z-10"
           >
             {selectedYear === currentYear
               ? "Current Season"
@@ -72,7 +72,7 @@ const Standings = () => {
             <div>▼</div>
           </button>
           {isDropdownOpen && (
-            <div className="absolute bg-[#15151E] border border-gray-700 text-gray-400 w-full md:w-[150px] mt-1 rounded-md shadow-md z-20">
+            <div className="absolute bg-[#15151E] border border-gray-700 text-gray-400 w-full md:w-[160px] mt-1 rounded-md shadow-md z-20">
               {yearOptions.map((year) => (
                 <div
                   key={year}

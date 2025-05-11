@@ -8,6 +8,7 @@ interface DriverStanding {
     familyName: string;
     givenName: string;
     nationality: string;
+    code?: string;
   };
   Constructors: {
     name: string;
@@ -23,19 +24,42 @@ interface DriverStandingsProps {
 const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
   const [driverStandings, setDriverStandings] = useState<DriverStanding[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
   useEffect(() => {
     const fetchDriverStandings = async () => {
       try {
+        // Check localStorage first
+        const cacheKey = `driver-standings-${selectedYear}`;
+        const cachedData = localStorage.getItem(cacheKey);
+
+        if (cachedData) {
+          const { data, timestamp } = JSON.parse(cachedData);
+          // Cache for 6 hours
+          if (Date.now() - timestamp < 6 * 60 * 60 * 1000) {
+            setDriverStandings(data);
+            setLoading(false);
+            return;
+          }
+          // Cache expired, remove it
+          localStorage.removeItem(cacheKey);
+        }
+
         const response = await fetch(
           `https://api.jolpi.ca/ergast/f1/${selectedYear}/driverstandings.json`
         );
         const data = await response.json();
-        console.log(data);
 
         if (data.MRData.StandingsTable.StandingsLists.length > 0) {
-          setDriverStandings(
-            data.MRData.StandingsTable.StandingsLists[0].DriverStandings
+          const standings =
+            data.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+          setDriverStandings(standings);
+
+          // Save to localStorage with timestamp
+          localStorage.setItem(
+            cacheKey,
+            JSON.stringify({
+              data: standings,
+              timestamp: Date.now(),
+            })
           );
         } else {
           console.warn("No standings data available for this season.");
@@ -55,16 +79,18 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
       {loading ? (
         <div className="text-center text-xl py-10">Loading...</div>
       ) : (
-        <div className="min-w-[600px] md:w-full">
-          {" "}
-          {/* Minimum width for mobile scrolling */}
+        <div className="w-full">
           <table className="w-full table-auto">
             <thead className="text-left uppercase border-b border-gray-500">
               <tr className="text-gray-300">
                 <th className="border-b-0 px-7 py-5 whitespace-nowrap">Pos</th>
                 <th className="px-4 py-2 whitespace-nowrap">Driver</th>
-                <th className="px-4 py-2 whitespace-nowrap">Nationality</th>
-                <th className="px-4 py-2 whitespace-nowrap">Constructor</th>
+                <th className="hidden md:table-cell px-4 py-2 whitespace-nowrap">
+                  Nationality
+                </th>
+                <th className="hidden md:table-cell px-4 py-2 whitespace-nowrap">
+                  Constructor
+                </th>
                 <th className="px-4 py-2 whitespace-nowrap">PTS</th>
               </tr>
             </thead>
@@ -87,10 +113,19 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
                       <td className="px-10 py-4 whitespace-nowrap">
                         {standing.position}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap min-w-[180px]">
-                        {standing.Driver.givenName} {standing.Driver.familyName}
+                      <td className="px-4 py-2 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className=" md:block w-[5px] h-[15px]"
+                            style={{ backgroundColor }}
+                          ></div>
+                          <span className="font-semibold">
+                            {standing.Driver.code ||
+                              `${standing.Driver.familyName}`}
+                          </span>
+                        </div>
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap min-w-[150px]">
+                      <td className="hidden md:table-cell px-4 py-2 whitespace-nowrap">
                         <div className="flex items-center">
                           {flagData[standing.Driver.nationality] ? (
                             <img
@@ -102,7 +137,7 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
                           <span>{standing.Driver.nationality}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap min-w-[150px]">
+                      <td className="hidden md:table-cell px-4 py-2 whitespace-nowrap">
                         <div
                           className="px-2 py-0.5 rounded-lg inline-block text-white"
                           style={{ backgroundColor }}
