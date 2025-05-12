@@ -1,19 +1,32 @@
-const Footer = () => {
+interface FooterProps {
+  setView?: (view: string) => void;
+}
+
+const Footer = ({ setView }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="min-h-[280px] bg-[#15151E] w-full flex flex-col gap-4 border-t border-gray-700 text-gray-300">
       <div className="py-8 md:py-0 md:h-[200px] flex flex-col md:flex-row items-center justify-evenly px-4 md:px-16 gap-8 md:gap-0">
         <div className="flex flex-col items-center md:items-start gap-3">
-          <div className="flex items-center gap-2 hover:opacity-80 cursor-pointer transition-all">
+          {" "}
+          <div
+            className="flex items-center gap-2 hover:opacity-80 cursor-pointer transition-all"
+            onClick={() => setView && setView("home")}
+          >
             <div className="bg-[#8B0000] p-1 flex items-center justify-center rounded-md h-[35px] w-[35px]">
               <h1 className="text-white font-bold text-2xl">F1</h1>
             </div>
             <h1 className="text-2xl font-bold text-gray-200">RaceView</h1>
           </div>
           <p className="text-gray-400 max-w-[250px] text-sm text-center md:text-left">
-            Your ultimate F1 racing dashboard. Powered by Ergast API. Not
-            affiliated with Formula 1.
+            F1 racing dashboard. Powered by{" "}
+            <span className="text-blue-200 font-semibold">
+              <a href="https://github.com/jolpica/jolpica-f1" target="_blank">
+                jolpica-f1 API
+              </a>
+            </span>
+            . Not affiliated with Formula 1.
           </p>
         </div>
 
@@ -26,19 +39,19 @@ const Footer = () => {
               <div className="flex flex-col gap-2 items-center md:items-start">
                 <a
                   href="/"
-                  className="hover:text-[#E10600] transition-colors duration-200"
+                  className="hover:text-[#8B0000] transition-colors duration-200"
                 >
                   Dashboard
                 </a>
                 <a
                   href="/standings"
-                  className="hover:text-[#E10600] transition-colors duration-200"
+                  className="hover:text-[#8B0000] transition-colors duration-200"
                 >
                   Standings
                 </a>
                 <a
                   href="/drivers"
-                  className="hover:text-[#E10600] transition-colors duration-200"
+                  className="hover:text-[#8B0000] transition-colors duration-200"
                 >
                   Drivers
                 </a>
@@ -48,18 +61,18 @@ const Footer = () => {
               <h2 className="font-semibold text-gray-200 text-lg">Resources</h2>
               <div className="flex flex-col gap-2 items-center md:items-start">
                 <a
-                  href="http://ergast.com/mrd/"
+                  href="https://github.com/jolpica/jolpica-f1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#E10600] transition-colors duration-200"
+                  className="hover:text-[#8B0000] transition-colors duration-200"
                 >
-                  Ergast API
+                  jolpica-f1 API
                 </a>
                 <a
                   href="https://www.formula1.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#E10600] transition-colors duration-200"
+                  className="hover:text-[#8B0000] transition-colors duration-200"
                 >
                   Official F1
                 </a>

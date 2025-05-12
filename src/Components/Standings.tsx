@@ -3,6 +3,7 @@ import DriverStandings from "./Standings/DriverStandings";
 import ConstructorStandings from "./Standings/ConstructorStandings";
 import { motion } from "framer-motion";
 import StandingsDriverImage from "../Images/standingsDriver2.png";
+import MobileDriver from "../Images/drivermobile.jpg";
 
 const Standings = () => {
   const currentYear = new Date().getFullYear();
@@ -28,9 +29,28 @@ const Standings = () => {
     };
   }, []);
   return (
-    <div className="w-full min-h-screen flex flex-col gap-2 mt-5 mb-5 text-black">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
-        <div>
+    <div className="w-full min-h-screen flex flex-col gap-2 mt-2 md:mt-5 mb-5 text-black">
+      <div className=" flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
+        <div className="w-full flex flex-col gap-3">
+          {" "}
+          <div className="md:hidden w-full h-[150px] z-0">
+            <div className="relative h-full w-full overflow-hidden rounded-t-2xl">
+              <img
+                className="w-full h-full object-cover brightness-75"
+                src={MobileDriver}
+                alt="driverImage"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-500 opacity-60"></div>
+              <div className="absolute inset-0 flex justify-center items-center">
+                <div className="flex items-center gap-1">
+                  <div className="bg-[#8B0000] p-1 flex items-center justify-center rounded-md h-[35px]">
+                    <h1 className="text-white font-bold text-2xl">F1</h1>
+                  </div>
+                  <h1 className="text-2xl font-bold text-white"> RaceView</h1>
+                </div>
+              </div>
+            </div>
+          </div>
           <h1 className="font-bold text-2xl md:text-5xl text-gray-400">
             Championship Standings
           </h1>
@@ -64,12 +84,12 @@ const Standings = () => {
         <div ref={dropdownRef} className="w-full md:w-auto">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="border border-gray-700 text-gray-300 flex items-center justify-between px-4 rounded-md cursor-pointer w-full md:w-[160px] h-[40px] z-10"
+            className="border border-gray-700 text-gray-300 flex items-center justify-between px-4 md:px-2 rounded-md cursor-pointer w-full md:w-[160px] h-[40px] z-10"
           >
             {selectedYear === currentYear
               ? "Current Season"
               : `Season: ${selectedYear}`}
-            <div>▼</div>
+            <div className="text-sm md:mt-1">▼</div>
           </button>
           {isDropdownOpen && (
             <div className="absolute bg-[#15151E] border border-gray-700 text-gray-400 w-full md:w-[160px] mt-1 rounded-md shadow-md z-20">
@@ -108,14 +128,15 @@ const Standings = () => {
         </div>
 
         <div className="hidden md:block absolute top-[-180px] right-[1px] w-[250px] h-[250px] z-0">
-          <img
-            className="w-full h-full object-cover rounded-tr-2xl relative brightness-75"
-            src={StandingsDriverImage}
-            alt="driverImage"
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-500 opacity-40 rounded-tr-2xl"></div>
-
+          {" "}
+          <div className="relative h-full w-full overflow-hidden rounded-t-2xl">
+            <img
+              className="w-full h-full object-cover brightness-75"
+              src={StandingsDriverImage}
+              alt="driverImage"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-500 opacity-40"></div>
+          </div>
           <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-center py-4 rounded-br-3xl">
             <div className="flex justify-center items-center gap-1">
               <div className="bg-[#8B0000] p-1 flex items-center justify-center rounded-md h-[35px]">
