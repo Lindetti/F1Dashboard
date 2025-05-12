@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
 import { teamColors } from "../../TeamColors";
 import DriverInfoDriverImage from "../../Images/driverInfoDriver.png";
 
@@ -20,17 +19,18 @@ interface DriverInfo {
   position: string;
   points: string;
   wins: string;
-  // Lägg till andra fält beroende på vad du vill visa
 }
 
 interface SeasonData {
   season: string;
 }
 
-const DriverInfo = () => {
-  const { driverId } = useParams<{ driverId: string }>();
-  const location = useLocation();
-  const selectedYear = location.state?.selectedYear || new Date().getFullYear(); // Få selectedYear från location.state eller använd nuvarande år
+interface DriverInfoProps {
+  driverId: string;
+  selectedYear: number;
+}
+
+const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
   const [activeSeasons, setActiveSeasons] = useState<SeasonData[]>([]);
   const [driverData, setDriverData] = useState<DriverInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -42,7 +42,6 @@ const DriverInfo = () => {
     let age = currentDate.getFullYear() - birthDate.getFullYear();
     const monthDifference = currentDate.getMonth() - birthDate.getMonth();
 
-    // Justera om födelsedagen inte har inträffat än i år
     if (
       monthDifference < 0 ||
       (monthDifference === 0 && currentDate.getDate() < birthDate.getDate())
@@ -59,20 +58,41 @@ const DriverInfo = () => {
     const fetchDriverInfo = async () => {
       try {
         setLoading(true);
+        const now = Date.now();
+        const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-        // Första fetch: Hämta driver standings information
-        const driverResponse = await fetch(
-          `https://api.jolpi.ca/ergast/f1/${selectedYear}/driverstandings.json`
+        // Check cache for driver standings
+        const cachedDriverData = localStorage.getItem(
+          `driverStandings_${driverId}_${selectedYear}`
         );
-        const driverData = await driverResponse.json();
+        let driver = null;
 
-        // Filtrera listan för att hitta den förare med rätt driverId
-        const driver =
-          driverData.MRData.StandingsTable.StandingsLists[0].DriverStandings.find(
-            (driver: DriverInfo) => driver.Driver.driverId === driverId
+        if (cachedDriverData) {
+          const { data, timestamp } = JSON.parse(cachedDriverData);
+          if (now - timestamp < CACHE_DURATION) {
+            driver = data;
+          }
+        }
+
+        if (!driver) {
+          // Fetch fresh driver standings data if not in cache or expired
+          const driverResponse = await fetch(
+            `https://api.jolpi.ca/ergast/f1/${selectedYear}/driverstandings.json`
           );
+          const driverData = await driverResponse.json();
+          driver =
+            driverData.MRData.StandingsTable.StandingsLists[0].DriverStandings.find(
+              (driver: DriverInfo) => driver.Driver.driverId === driverId
+            );
 
-        console.log(driver);
+          // Cache the driver data
+          if (driver) {
+            localStorage.setItem(
+              `driverStandings_${driverId}_${selectedYear}`,
+              JSON.stringify({ data: driver, timestamp: now })
+            );
+          }
+        }
 
         if (driver) {
           setDriverData(driver);
@@ -80,15 +100,38 @@ const DriverInfo = () => {
           setError("No data found for this driver.");
         }
 
-        // Andra fetch: Hämta säsongsdata för föraren
-        const seasonResponse = await fetch(
-          `https://api.jolpi.ca/ergast/f1/drivers/${driverId}/seasons.json`
+        // Check cache for seasons data
+        const cachedSeasonData = localStorage.getItem(
+          `driverSeasons_${driverId}`
         );
-        const seasonData = await seasonResponse.json();
+        let seasonsData = null;
 
-        // Visa säsonger om de finns
-        if (seasonData.MRData) {
-          setActiveSeasons(seasonData.MRData.SeasonTable.Seasons);
+        if (cachedSeasonData) {
+          const { data, timestamp } = JSON.parse(cachedSeasonData);
+          if (now - timestamp < CACHE_DURATION) {
+            seasonsData = data;
+          }
+        }
+
+        if (!seasonsData) {
+          // Fetch fresh seasons data if not in cache or expired
+          const seasonResponse = await fetch(
+            `https://api.jolpi.ca/ergast/f1/drivers/${driverId}/seasons.json`
+          );
+          const seasonData = await seasonResponse.json();
+          seasonsData = seasonData.MRData.SeasonTable.Seasons;
+
+          // Cache the seasons data
+          if (seasonsData) {
+            localStorage.setItem(
+              `driverSeasons_${driverId}`,
+              JSON.stringify({ data: seasonsData, timestamp: now })
+            );
+          }
+        }
+
+        if (seasonsData) {
+          setActiveSeasons(seasonsData);
         } else {
           setError("No seasons data found.");
         }
@@ -104,73 +147,73 @@ const DriverInfo = () => {
   }, [driverId, selectedYear]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-white p-8">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-white p-8">{error}</div>;
   }
 
   if (!driverData) {
-    return <div>No driver information available.</div>;
+    return (
+      <div className="text-white p-8">No driver information available.</div>
+    );
   }
+
   const formatSeasons = (seasons: string[]) => {
     if (seasons.length === 0) return "No active seasons available.";
 
-    // Konvertera strängar till siffror och sortera dem i stigande ordning
     const sortedSeasons = seasons
-      .map((season) => parseInt(season, 10)) // Konvertera till nummer
+      .map((season) => parseInt(season, 10))
       .sort((a, b) => a - b);
 
-    // Returnera i formatet "första - sista"
     return `${sortedSeasons[0]}-${sortedSeasons[sortedSeasons.length - 1]}`;
   };
 
-  // Extrahera endast säsongsåren som en sträng-array
   const seasonYears = activeSeasons.map((seasonObj) => seasonObj.season);
 
-  const teamName = driverData.Constructors[0]?.name; // Hämta teamnamnet
-  const bgColor = teamColors[teamName] || "bg-gray-500"; // Standardfärg om team saknas
+  const teamName = driverData.Constructors[0]?.name;
+  const bgColor = teamColors[teamName] || "bg-gray-500";
 
   return (
-    <div className="md:w-4/6 min-h-screen">
-      <div className="relative bg-white h-[700px] shadow-lg rounded-lg rounded-bl-2xl flex justify-between border border-gray-200">
-        <div className="flex flex-col gap-8 flex-1 p-8">
+    <div className="w-full">
+      <div className="relative shadow-lg rounded-lg rounded-bl-2xl flex justify-between h-auto md:min-h-[700px]">
+        <div className="flex flex-col gap-8 flex-1 p-8 ">
           <div>
-            <h1 className="font-semibold text-lg italic text-gray-500">
+            <h1 className="font-semibold text-lg italic text-gray-300">
               Season: {selectedYear}
             </h1>
           </div>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 w-full">
+            {" "}
             <div
-              className={`flex gap-2 items-center px-2 py-3 text-white rounded-sm`}
+              className={`flex gap-2 items-center px-2 py-3 text-white rounded-sm justify-center md:justify-start`}
               style={{ backgroundColor: bgColor }}
             >
-              <h1 className="font-semibold text-4xl">
+              <h1 className="font-semibold text-3xl">
                 {driverData.Driver.givenName} {driverData.Driver.familyName}
               </h1>
               <p className="font-bold">({driverData.Driver.code})</p>
             </div>
-
-            <p className="font-semibold text-2xl">
+            <p className="font-bold text-xl md:text-2xl text-center md:text-left text-gray-400">
               {driverData.Constructors[0]?.name}
             </p>
-          </div>
-          <div className="flex gap-10">
-            <div className="bg-gray-500 w-[2px]"></div>
-            <div className="flex flex-col gap-1 flex-1">
-              <p className=" text-gray-500 font-semibold">Personal info</p>
-              <div className="flex justify-between">
+          </div>{" "}
+          <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+            <div className="hidden md:block bg-gray-500 w-[2px]"></div>
+            <div className="flex flex-col gap-1 flex-1 text-gray-400">
+              <p className="text-gray-300 font-semibold">Personal info</p>{" "}
+              <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Number </p>
                 <p className="font-semibold">
                   {driverData.Driver.permanentNumber}
                 </p>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Nationality</p>
                 <p className="font-semibold">{driverData.Driver.nationality}</p>
-              </div>
-              <div className="flex justify-between">
+              </div>{" "}
+              <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Age</p>
                 <p className="font-semibold">
                   {driverData.Driver.dateOfBirth
@@ -178,15 +221,14 @@ const DriverInfo = () => {
                     : "N/A"}
                 </p>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Date of birth </p>
                 <p className="font-semibold">{driverData.Driver.dateOfBirth}</p>
               </div>
             </div>
-
             <div className="bg-gray-500 w-[2px]"></div>
-            <div className="flex flex-col gap-1 flex-1">
-              <p className=" text-gray-500 font-semibold">Season stats</p>
+            <div className="flex flex-col gap-1 flex-1 text-gray-400">
+              <p className=" font-semibold text-gray-300 ">Season stats</p>
               <div className="flex justify-between">
                 <p>Championship </p>
                 <p className="font-semibold">P{driverData.position}</p>
@@ -207,37 +249,31 @@ const DriverInfo = () => {
                     : "No active seasons available."}
                 </p>
               </div>
-            </div>
-
+            </div>{" "}
             <div className="bg-gray-500 w-[2px]"></div>
-
-            <div className="flex flex-1 justify-center items-center">
-              <div className="flex flex-col gap-2">
-                <p className=" text-gray-500 font-semibold">Career</p>
+            <div className="flex flex-1 items-center w-full md:justify-center">
+              <div className="flex md:flex-col w-full md:w-auto gap-2 justify-between md:justify-center items-center">
+                <p className="font-semibold text-gray-300">Career</p>
                 <a
-                  className="underline text-red-600"
+                  className="underline text-blue-200"
                   href={driverData.Driver.url}
                   target="_blank"
                 >
-                  View full career history
+                  Wikipedia
                 </a>
               </div>
             </div>
             <div className="bg-gray-500 w-[2px]"></div>
           </div>
-
-          <div className="absolute left-0 bottom-0 w-[280px] h-[220px] z-0">
-            {/* Bilden med rundade hörn */}
+          <div className="hidden md:block absolute left-0 bottom-0 w-[280px] h-[220px] z-0">
             <img
               className="w-full h-full object-cover rounded-tr-2xl rounded-bl-2xl relative brightness-75"
               src={DriverInfoDriverImage}
               alt="driverImage"
             />
 
-            {/* Skuggan som ligger ovanpå */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-500 opacity-40 rounded-tr-2xl"></div>
 
-            {/* Texten längst ner */}
             <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-center py-4 rounded-bl-2xl">
               <div className="flex justify-center items-center gap-1">
                 <div className="bg-[#E10600] p-1 flex items-center justify-center rounded-md h-[35px]">
