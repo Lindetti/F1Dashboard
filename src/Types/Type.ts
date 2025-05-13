@@ -33,6 +33,7 @@ export type Result = {
   status: string;
   raceName: string;
   nationality: string;
+  points: string;
   Circuit: {
     circuitId: string;
     Location: {
