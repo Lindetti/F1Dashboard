@@ -1,14 +1,14 @@
 import { useAPI } from "../Context/useAPI";
 import { teamColors } from "../TeamColors";
+import "react-calendar/dist/Calendar.css";
 import PitstopChart from "./Pitstopchart/PitstopChart";
 import { useEffect, useState, useRef } from "react";
-import homeDriver2 from "../Images/homeDriver.png";
 import { countrysData } from "../countrysData";
 import Standings from "./Standings";
 import Drivers from "./Drivers/Drivers";
 import RaceInfo from "./RaceInfo/RaceInfo";
 import RaceResults from "./RaceResults/RaceResults";
-import StandingsBtnIcon2 from "../assets/icons/trophy2.png";  
+import StandingsBtnIcon2 from "../assets/icons/trophy2.png";
 import DriversBtnIcon from "../assets/icons/drivers.png";
 import RacesBtn from "../assets/icons/race.png";
 import BackToDashboardBtnIcon from "../assets/icons/dashboard.png";
@@ -55,7 +55,7 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
                 : "hover:bg-[#20202D] hover:text-white"
             }`}
           >
-             <img src={StandingsBtnIcon2} alt="Standings" className="w-5 h-5" />
+            <img src={StandingsBtnIcon2} alt="Standings" className="w-5 h-5" />
             <p className="font-semibold">View Standings</p>
             <span
               style={{ fontSize: "30px", fontWeight: "bold", color: "white" }}
@@ -90,7 +90,11 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
             onClick={() => setView("home")}
           >
             <div className="border border-gray-700 text-gray-300 flex-1 rounded-md pl-4 flex gap-2 items-center cursor-pointer transition-all duration-300 hover:bg-[#20202D] hover:text-white">
-               <img src={BackToDashboardBtnIcon} alt="Standings" className="w-5 h-5" />
+              <img
+                src={BackToDashboardBtnIcon}
+                alt="Standings"
+                className="w-5 h-5"
+              />
               <p className="font-semibold">Back to Dashboard</p>
               <span
                 style={{ fontSize: "30px", fontWeight: "bold", color: "white" }}
@@ -107,12 +111,12 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
               onClick={() => setIsOpen(!isOpen)}
               className="border border-gray-700 text-gray-300 h-[50px] rounded-md w-full pl-4 font-semibold flex items-center justify-between cursor-pointer hover:bg-[#20202D] hover:text-white transition-all duration-300"
             >
-              <div className="flex items-center gap-2"> 
+              <div className="flex items-center gap-2">
                 <img src={RacesBtn} alt="Standings" className="w-8 h-12" />
-              <p className="font-semibold">
-                {races.find((race) => race.Circuit.circuitId === selectedRace)
-                  ?.raceName || "No race found"}
-              </p>
+                <p className="font-semibold">
+                  {races.find((race) => race.Circuit.circuitId === selectedRace)
+                    ?.raceName || "No race found"}
+                </p>
               </div>
               <span className="text-white text-sm font-semibold pr-4">▼</span>
             </button>
@@ -192,20 +196,28 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
                     <div
                       key={index}
                       style={{ backgroundColor: teamColor }}
-                      className="font-sans relative min-h-[170px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-start items-center p-7 text-white shadow-md"
+                      className="font-sans relative min-h-[170px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-center items-center p-7 text-white shadow-md"
                     >
-                      <p className="text-lg font-semibold">
-                        {driver.Driver.givenName} {driver.Driver.familyName}
-                      </p>
-                      <p className="font-semibold text-2xl">
-                        {driver.Constructor.name}
-                      </p>
-                      <div className="absolute bg-[#27272A]/50 backdrop-blur-lg w-[99%] bottom-0.5 h-[45px] rounded-2xl border border-gray-500 flex flex-col justify-center">
-                        <div className="p-2 px-4 flex justify-between items-center text-white font-bold">
+                      <div className="mb-5 flex flex-col items-center">
+                        <p className="text-lg font-semibold">
+                          {driver.Driver.givenName} {driver.Driver.familyName}
+                        </p>
+                        <p className="font-semibold text-2xl">
+                          {driver.Constructor.name}
+                        </p>
+                      </div>
+                      <div className="flex gap-1 absolute top-2 right-2 font-semibold bg-[#27272A] px-2 rounded-lg">
+                        <p>{driver.points}</p>
+                        <p>PTS</p>
+                      </div>
+                      <div className="absolute top-2 left-3 flex font-bold text-lg bg-[#27272A] px-2 rounded-lg">
+                        <p>P{driver.position}</p>
+                      </div>
+                      <div className="absolute bg-[#27272A]/50 backdrop-blur-lg w-[100%] bottom-0 h-[45px] rounded-bl-2xl rounded-br-2xl border border-gray-500 flex flex-col justify-center">
+                        <div className="px-3 flex justify-between items-center text-white font-bold">
                           <p className="bg-[#27272A] backdrop-blur px-5 py-[2px] rounded-lg text-white">
                             {driver.Driver.code}
                           </p>
-                          <p>P{driver.position}</p>
                           <p>{driver.Time.time}</p>
                         </div>
                       </div>
@@ -231,7 +243,6 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
                       </p>
                     </div>
                     <p className="text-lg">{`Lap ${fastestLap.lap}`}</p>
-                    <p className="text-lg">{`Pos: ${fastestLap.position}`}</p>
                   </div>
                 </div>
               ) : (
@@ -248,23 +259,94 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
               <h2 className="font-semibold text-2xl">Pitstops</h2>
               <PitstopChart selectedRaceData={selectedRaceData} />
             </div>
-          </div>{" "}
+            <div className="bg-[#1A1A24] p-4 rounded-lg border border-gray-700 block md:hidden">
+              <h2 className="text-xl font-semibold text-gray-300 mb-4">
+                Upcoming Races
+              </h2>
+              <div className="space-y-3">
+                {races
+                  .sort(
+                    (a, b) =>
+                      new Date(a.date).getTime() - new Date(b.date).getTime()
+                  )
+                  .filter((race) => new Date(race.date) > new Date())
+                  .slice(0, 4)
+                  .map((race) => (
+                    <div
+                      key={race.Circuit.circuitId}
+                      className="flex flex-col p-3 border border-gray-700 rounded-lg hover:bg-[#20202D] transition-all duration-300"
+                    >
+                      <div className="flex justify-between items-center">
+                        <p className="text-gray-300 font-semibold">
+                          Round {race.round}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          {new Date(race.date).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "short",
+                          })}
+                        </p>
+                      </div>
+                      <p className="text-gray-300 mt-1">{race.raceName}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <img
+                          src={countrysData[race.Circuit.Location.country]}
+                          alt={race.Circuit.Location.country}
+                          className="w-6 h-4 rounded"
+                        />
+                        <p className="text-sm text-gray-400">
+                          {race.Circuit.Location.country}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+
           <div className="h-auto w-full md:w-[320px] flex flex-col gap-5 mb-5 md:mb-0 hidden md:flex">
-            <RaceResults results={results} />
-            <div className="h-[320px] relative">
-              <img
-                className="rounded-tr-2xl rounded-br-3xl relative brightness-75"
-                src={homeDriver2}
-                alt="driverAI"
-              />
-              <div className="absolute inset-0 rounded-br-3xl bg-gradient-to-r from-transparent to-blue-500 opacity-40"></div>
-              <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-center py-4 rounded-br-3xl">
-                <div className="flex justify-center items-center gap-1">
-                  <div className="bg-[#8B0000] p-1 flex items-center justify-center rounded-md h-[35px] w-[35px]">
-                    <h1 className="text-white font-bold text-2xl">F1</h1>
-                  </div>
-                  <h1 className="text-2xl font-bold"> RaceView</h1>
-                </div>
+            <RaceResults results={results} />{" "}
+            <div className="bg-[#1A1A24] p-4 rounded-lg border border-gray-700 block">
+              <h2 className="text-xl font-semibold text-gray-300 mb-4">
+                Upcoming Races
+              </h2>
+              <div className="space-y-3">
+                {races
+                  .sort(
+                    (a, b) =>
+                      new Date(a.date).getTime() - new Date(b.date).getTime()
+                  )
+                  .filter((race) => new Date(race.date) > new Date())
+                  .slice(0, 4)
+                  .map((race) => (
+                    <div
+                      key={race.Circuit.circuitId}
+                      className="flex flex-col p-3 border border-gray-700 rounded-lg hover:bg-[#20202D] transition-all duration-300"
+                    >
+                      <div className="flex justify-between items-center">
+                        <p className="text-gray-300 font-semibold">
+                          Round {race.round}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          {new Date(race.date).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "short",
+                          })}
+                        </p>
+                      </div>
+                      <p className="text-gray-300 mt-1">{race.raceName}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <img
+                          src={countrysData[race.Circuit.Location.country]}
+                          alt={race.Circuit.Location.country}
+                          className="w-6 h-4 rounded"
+                        />
+                        <p className="text-sm text-gray-400">
+                          {race.Circuit.Location.country}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>

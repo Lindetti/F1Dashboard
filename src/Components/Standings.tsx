@@ -51,7 +51,7 @@ const Standings = () => {
               </div>
             </div>
           </div>
-          <h1 className="font-bold text-2xl md:text-5xl text-gray-400">
+          <h1 className="font-bold text-2xl md:text-5xl text-gray-400 text-center md:text-left">
             Championship Standings
           </h1>
         </div>
@@ -79,9 +79,8 @@ const Standings = () => {
           >
             Constructors
           </button>
-        </div>
-
-        <div ref={dropdownRef} className="w-full md:w-auto">
+        </div>{" "}
+        <div ref={dropdownRef} className="w-full md:w-auto relative">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="border border-gray-700 text-gray-300 flex items-center justify-between px-4 md:px-2 rounded-md cursor-pointer w-full md:w-[160px] h-[40px] z-10"
