@@ -104,14 +104,14 @@ const Drivers = () => {
     <>
       <div className="w-full min-h-screen flex flex-col gap-2 mb-5 text-black items-center">
         <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-t-[10px] border-r-[10px] py-4 pr-3 border-[#20202D] rounded-tr-3xl">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-t-[5px] border-r-[5px] md:border-t-[10px] md:border-r-[10px] py-4 pr-3 border-[#20202D] rounded-tr-3xl">
             <h1 className="font-bold text-3xl md:text-5xl text-gray-400">
               F1 Drivers {selectedYear}
-            </h1>
-            <div ref={dropdownRef}>
+            </h1>{" "}
+            <div ref={dropdownRef} className="w-full md:w-auto relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="border border-gray-700 text-gray-300 flex items-center justify-between p-2 rounded-md rounded-tr-2xl cursor-pointer w-[250px] md:w-[150px] h-[40px] z-10"
+                className="border border-gray-700 text-gray-300 flex items-center justify-between p-2 rounded-md rounded-0 md:rounded-tr-2xl cursor-pointer w-full md:w-[150px] h-[40px] z-10"
               >
                 {selectedYear === currentYear
                   ? "Current Season"
@@ -119,7 +119,7 @@ const Drivers = () => {
                 <div>▼</div>
               </button>
               {isDropdownOpen && (
-                <div className="absolute bg-[#15151E] border border-gray-700 text-gray-400 w-full md:w-[150px] mt-1 rounded-md shadow-md z-20">
+                <div className="absolute bg-[#15151E] border border-gray-700 text-gray-400 w-full mt-1 rounded-md shadow-md z-20">
                   {yearOptions.map((year) => (
                     <div
                       key={year}
@@ -143,9 +143,10 @@ const Drivers = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-8">
-            <div className="bg-[#8B0000] p-4 rounded-sm text-white rounded-tl-lg rounded-tr-lg">
-              <h1 className="font-semibold text-sm md:text-base text-center md:text-left">
+          <div className="flex flex-col gap-6">
+            <div className="relative p-4 rounded-tl-lg rounded-tr-lg overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 opacity-20 z-0" />
+              <h1 className="relative z-10 font-semibold text-sm md:text-base text-center md:text-left text-gray-200">
                 {selectedYear} drivers, current positions and points
               </h1>
             </div>
@@ -158,8 +159,8 @@ const Drivers = () => {
                 return (
                   <div
                     key={driver.Driver.driverId}
-                    className="w-full min-h-[230px] p-4 rounded-tl-lg rounded-tr-lg 
-                             border-t-[15px] border-b-2 bg-[#1A1A24] border-b-gray-500 
+                    className="w-full min-h-[230px] p-4 rounded-lg
+                             border-t-[15px] border-b-2 bg-[#1A1A24] border-b-gray-700 
                              transition-all duration-300 ease-in-out shadow-md 
                              hover:shadow-lg cursor-pointer"
                     style={{

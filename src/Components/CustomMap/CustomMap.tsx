@@ -1,7 +1,21 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { LatLngExpression, Map, LatLngBounds } from "leaflet";
+import { LatLngExpression, Map, LatLngBounds, Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+// Fixa standard-ikonen för Leaflet
+interface IconDefault extends Icon.Default {
+  _getIconUrl?: string;
+}
+delete (Icon.Default.prototype as IconDefault)._getIconUrl;
+Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+});
 
 interface CustomMapProps {
   lat: number;
@@ -40,7 +54,7 @@ const CustomMap: React.FC<CustomMapProps> = ({ lat, long, zoom, raceName }) => {
       <MapContainer
         center={position}
         zoom={zoom}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", height: "100%", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}
         minZoom={zoom}
         maxZoom={16}
         ref={mapRef}

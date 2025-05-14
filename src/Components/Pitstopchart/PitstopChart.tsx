@@ -198,7 +198,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
     );
   }
   return (
-    <div className="pitstop-chart bg-[#1A1A24] text-gray-300 p-4 rounded-lg">
+    <div className="pitstop-chart h-auto md:h-[440px] bg-[#1A1A24] text-gray-300 p-4 rounded-lg">
       <Line data={chartData} options={options} />
     </div>
   );
