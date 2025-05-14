@@ -23,7 +23,7 @@ const RaceResults: React.FC<RaceResultsProps> = ({ results }) => {
     <div className="overflow-x-auto">
       <table className="table-auto w-full border-collapse">
         <thead>
-          <tr className="bg-[#15151E] border border-gray-700 text-gray-300 rounded-3xl">
+          <tr className="bg-[#15151E] border border-gray-700 text-gray-300">
             <th className="rounded-l-md px-4 py-2">Position</th>
             <th className="px-4 py-2">Driver</th>
             <th className="rounded-r-md px-4 py-2">Time</th>

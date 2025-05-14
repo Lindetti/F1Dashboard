@@ -12,6 +12,8 @@ import StandingsBtnIcon2 from "../assets/icons/trophy2.png";
 import DriversBtnIcon from "../assets/icons/drivers.png";
 import RacesBtn from "../assets/icons/race.png";
 import BackToDashboardBtnIcon from "../assets/icons/dashboard.png";
+import { motion } from "framer-motion";
+import { ClipLoader } from "react-spinners";
 
 interface HomeProps {
   view: string;
@@ -20,6 +22,7 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ view, setView }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { races, selectedRace, setSelectedRace, results, fastestLap } =
     useAPI();
@@ -27,6 +30,7 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
   const selectedRaceData = races.find(
     (race) => race.Circuit.circuitId === selectedRace
   );
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -40,8 +44,17 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    setIsLoading(true);
+    // Simulera en kort laddningstid när vyn ändras
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [view]);
+
   return (
-    <div className="w-full md:w-4/6 min-h-screen flex flex-col gap-2 md:gap-8 mb-5 justify-center p-4 md:p-0">
+    <div className="w-full lg:w-4/6 min-h-screen flex flex-col gap-2 md:gap-8 mb-5 justify-center p-4 lg:p-0">
       <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-4 md:p-0">
         {" "}
         <div
@@ -97,7 +110,11 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
               />
               <p className="font-semibold">Back to Dashboard</p>
               <span
-                style={{ fontSize: "30px", fontWeight: "bold", color: "white" }}
+                style={{
+                  fontSize: "30px",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
               >
                 &#8594;
               </span>
@@ -165,10 +182,29 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
             )}
           </div>
         )}
-      </div>
-
-      {view === "home" ? (
-        <div className="h-auto flex flex-col md:flex-row gap-7 flex-1 text-white mt-5 md:mt-0 p-4 md:p-0">
+      </div>{" "}
+      {isLoading ? (
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="h-[600px] flex flex-col gap-4 items-center">
+            <ClipLoader color="#8B0000" size={100} />
+            <p className="text-gray-300 text-2xl font-semibold">
+              {view === "home"
+                ? "Preparing race insights..."
+                : view === "standings"
+                ? "Loading standings..."
+                : "Loading drivers.."}
+            </p>
+          </div>
+        </div>
+      ) : view === "home" ? (
+        <motion.div
+          key="home"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="h-auto flex flex-col md:flex-row gap-7 flex-1 text-white mt-5 md:mt-0 p-4 md:p-0"
+        >
           <div className="h-auto flex flex-col gap-3 flex-1">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex gap-2 items-center justify-center mb-2 md:hidden">
@@ -249,17 +285,17 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
                 <p>No fastest lap data</p>
               )}
             </div>{" "}
-            <div className="block md:hidden mt-2">
+            <div className="block lg:hidden mt-2">
               <RaceResults results={results} />
             </div>
             <div className="mt-2 text-gray-300">
               <RaceInfo selectedRaceData={selectedRaceData} />
             </div>
-            <div className="flex flex-col gap-5 bg-[#1A1A24] p-5 rounded-lg border text-gray-300 border-gray-700 mb-5">
-              <h2 className="font-semibold text-2xl">Pitstops</h2>
+            <div className="flex flex-col gap-5 bg-[#1A1A24] p-5 rounded-lg border text-gray-300 border-gray-700 mb-2 md:mb-5 mt-2">
+              <h2 className="font-semibold text-2xl pl-1">Pitstops</h2>
               <PitstopChart selectedRaceData={selectedRaceData} />
             </div>
-            <div className="bg-[#1A1A24] p-4 rounded-lg border border-gray-700 block md:hidden">
+            <div className="bg-[#1A1A24] p-4 rounded-lg border border-gray-700 block lg:hidden">
               <h2 className="text-xl font-semibold text-gray-300 mb-4">
                 Upcoming Races
               </h2>
@@ -304,7 +340,7 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
             </div>
           </div>
 
-          <div className="h-auto w-full md:w-[320px] flex flex-col gap-5 mb-5 md:mb-0 hidden md:flex">
+          <div className="h-auto w-full md:w-[320px] flex flex-col gap-5 mb-5 md:mb-0 hidden lg:flex">
             <RaceResults results={results} />{" "}
             <div className="bg-[#1A1A24] p-4 rounded-lg border border-gray-700 block">
               <h2 className="text-xl font-semibold text-gray-300 mb-4">
@@ -350,15 +386,29 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       ) : view === "standings" ? (
-        <div className="w-full p-4 md:p-0">
+        <motion.div
+          key="standings"
+          className="w-full p-4 md:p-0"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
           <Standings />
-        </div>
+        </motion.div>
       ) : view === "driver" ? (
-        <div className="w-full p-4 md:p-0">
+        <motion.div
+          key="driver"
+          className="w-full p-4 md:p-0"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
           <Drivers />
-        </div>
+        </motion.div>
       ) : null}
     </div>
   );

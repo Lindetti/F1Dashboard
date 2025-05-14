@@ -33,7 +33,7 @@ const RaceInfo: React.FC<RaceInfoProps> = ({ selectedRaceData }) => {
   }
 
   return (
-    <div className="h-[580px] md:h-[600px] w-full bg-[#1A1A24] flex flex-col gap-0 md:gap-4 p-0 md:p-4 rounded-lg border border-gray-700">
+    <div className="h-[590px] md:h-[600px] w-full bg-[#1A1A24] flex flex-col gap-0 md:gap-4 p-0 md:p-4 rounded-lg border border-gray-700">
       <div className="flex gap-2 items-center p-4 md:p-0 md:pl-2">
         {countrysData[selectedRaceData.Circuit.Location.country] ? (
           <img

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { teamColors } from "../../TeamColors";
 import DriverInfoDriverImage from "../../Images/driverInfoDriver.png";
+import { flagData } from "../../flagData";
 
 interface DriverInfo {
   Driver: {
@@ -211,7 +212,18 @@ const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
               </div>
               <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Nationality</p>
-                <p className="font-semibold">{driverData.Driver.nationality}</p>
+                       <div className="flex items-center">
+                            {flagData[driverData.Driver.nationality] ? (
+                              <img
+                                src={flagData[driverData.Driver.nationality]}
+                                alt={driverData.Driver.nationality}
+                                className="w-5 h-3 mr-2"
+                              />
+                            ) : null}
+                            <p className="text-gray-400 font-semibold">
+                              {driverData.Driver.nationality}
+                            </p>
+                          </div>
               </div>{" "}
               <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Age</p>

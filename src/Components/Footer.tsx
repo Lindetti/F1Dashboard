@@ -5,6 +5,13 @@ interface FooterProps {
 const Footer = ({ setView }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
+  const handleNavClick = (view: string) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (setView) {
+      setView(view);
+    }
+  };
+
   return (
     <footer className="min-h-[280px] bg-[#15151E] w-full flex flex-col gap-4 border-t border-gray-700 text-gray-300">
       <div className="py-8 md:py-0 md:h-[200px] flex flex-col md:flex-row items-center justify-evenly px-4 md:px-16 gap-8 md:gap-0">
@@ -12,7 +19,7 @@ const Footer = ({ setView }: FooterProps) => {
           {" "}
           <div
             className="flex items-center gap-2 hover:opacity-80 cursor-pointer transition-all"
-            onClick={() => setView && setView("home")}
+            onClick={() => handleNavClick("home")}
           >
             <div className="bg-[#8B0000] p-1 flex items-center justify-center rounded-md h-[35px] w-[35px]">
               <h1 className="text-white font-bold text-2xl">F1</h1>
@@ -37,24 +44,24 @@ const Footer = ({ setView }: FooterProps) => {
                 Navigation
               </h2>
               <div className="flex flex-col gap-2 items-center md:items-start">
-                <a
-                  href="/"
+                <button
+                  onClick={() => handleNavClick("home")}
                   className="hover:text-[#8B0000] transition-colors duration-200"
                 >
                   Dashboard
-                </a>
-                <a
-                  href="/standings"
+                </button>
+                <button
+                  onClick={() => handleNavClick("standings")}
                   className="hover:text-[#8B0000] transition-colors duration-200"
                 >
                   Standings
-                </a>
-                <a
-                  href="/drivers"
+                </button>
+                <button
+                  onClick={() => handleNavClick("driver")}
                   className="hover:text-[#8B0000] transition-colors duration-200"
                 >
                   Drivers
-                </a>
+                </button>
               </div>
             </div>
             <div className="flex flex-col gap-4 items-center md:items-start">

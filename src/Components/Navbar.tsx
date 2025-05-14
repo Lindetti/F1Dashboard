@@ -18,8 +18,8 @@ const Navbar = ({ setView }: NavbarProps) => {
   const nextRace = getNextRace();
 
   return (
-    <nav className="bg-[#15151E] w-full flex items-center justify-center md:h-[100px] h-auto ">
-      <div className="w-full md:w-4/6 flex flex-col md:flex-row justify-center md:justify-between items-center h-[200px]">
+    <nav className="bg-[#15151E] w-full flex items-center justify-center md:h-[100px] h-auto md:p-4 lg:p-0 ">
+      <div className="w-full lg:w-4/6 flex flex-col md:flex-row justify-center md:justify-between items-center h-[200px]">
         <div
           className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-all"
           onClick={() => setView && setView("home")}
