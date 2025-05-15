@@ -18,7 +18,7 @@ interface RaceResultsProps {
   }>;
 }
 
-const RaceResults: React.FC<RaceResultsProps> = ({ results }) => {
+const RaceResults = ({ results }: RaceResultsProps) => {
   return (
     <div className="overflow-x-auto">
       <table className="table-auto w-full border-collapse">
@@ -59,7 +59,7 @@ const RaceResults: React.FC<RaceResultsProps> = ({ results }) => {
                   ></div>
                   <div className="relative group">
                     <div className="cursor-default">{driver.Driver.code}</div>
-                    <div className="absolute w-32 border border-gray-700 left-full top-1/2 transform -translate-y-1/2 ml-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+                    <div className="absolute w-[140px] border border-gray-700 left-full top-1/2 transform -translate-y-1/2 ml-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
                       {driver.Driver.givenName} {driver.Driver.familyName}
                     </div>
                   </div>

@@ -188,10 +188,10 @@ const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
           <div className="flex flex-col gap-5 w-full">
             {" "}
             <div
-              className={`flex gap-2 items-center px-2 py-3 text-white rounded-sm justify-center md:justify-start`}
+              className={`flex gap-2 items-center px-2 py-3 text-white justify-center md:justify-start rounded-lg w-full truncate`}
               style={{ backgroundColor: bgColor }}
             >
-              <h1 className="font-semibold text-3xl">
+              <h1 className="font-semibold text-2xl md:text-3xl">
                 {driverData.Driver.givenName} {driverData.Driver.familyName}
               </h1>
               <p className="font-bold">({driverData.Driver.code})</p>
@@ -212,18 +212,18 @@ const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
               </div>
               <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Nationality</p>
-                       <div className="flex items-center">
-                            {flagData[driverData.Driver.nationality] ? (
-                              <img
-                                src={flagData[driverData.Driver.nationality]}
-                                alt={driverData.Driver.nationality}
-                                className="w-5 h-3 mr-2"
-                              />
-                            ) : null}
-                            <p className="text-gray-400 font-semibold">
-                              {driverData.Driver.nationality}
-                            </p>
-                          </div>
+                <div className="flex items-center">
+                  {flagData[driverData.Driver.nationality] ? (
+                    <img
+                      src={flagData[driverData.Driver.nationality]}
+                      alt={driverData.Driver.nationality}
+                      className="w-5 h-3 mr-2"
+                    />
+                  ) : null}
+                  <p className="text-gray-400 font-semibold">
+                    {driverData.Driver.nationality}
+                  </p>
+                </div>
               </div>{" "}
               <div className="flex justify-between items-start gap-1 md:gap-0">
                 <p>Age</p>

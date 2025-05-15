@@ -36,7 +36,7 @@ const Navbar = ({ setView }: NavbarProps) => {
               <span className="text-gray-300 font-semibold">
                 {nextRace.raceName}
               </span>
-              <span className="bg-[#20202D] text-gray-300 px-3 py-1 rounded-md font-semibold">
+              <span className="bg-[#20202D] text-blue-200 px-3 py-1 rounded-full font-semibold">
                 {new Date(nextRace.date).toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",

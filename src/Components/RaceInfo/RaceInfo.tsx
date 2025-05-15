@@ -20,7 +20,7 @@ interface RaceInfoProps {
     | undefined;
 }
 
-const RaceInfo: React.FC<RaceInfoProps> = ({ selectedRaceData }) => {
+const RaceInfo = ({ selectedRaceData }: RaceInfoProps) => {
   const raceLocation = selectedRaceData
     ? {
         lat: parseFloat(selectedRaceData.Circuit.Location.lat),

@@ -235,6 +235,7 @@ const Drivers = () => {
       <Modal
         isOpen={selectedDriver !== null}
         onClose={() => setSelectedDriver(null)}
+        teamName={drivers.find(d => d.Driver.driverId === selectedDriver)?.Constructors[0]?.name}
       >
         {selectedDriver && (
           <DriverInfo driverId={selectedDriver} selectedYear={selectedYear} />

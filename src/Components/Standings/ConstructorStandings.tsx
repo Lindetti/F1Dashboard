@@ -112,7 +112,11 @@ const ConstructorStandings = ({ selectedYear }: ConstructorStandingsProps) => {
                         ></div>
                         <p
                           style={{ backgroundColor }}
-                          className="text-white text-sm font-semibold flex items-center px-2 rounded-lg whitespace-nowrap"
+                          className={`text-sm font-semibold flex items-center px-2 rounded-lg whitespace-nowrap ${
+                            backgroundColor === "#FFF500"
+                              ? "text-black"
+                              : "text-white"
+                          }`}
                         >
                           {standing.Constructor.name}
                         </p>

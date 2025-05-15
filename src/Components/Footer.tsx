@@ -119,9 +119,13 @@ const Footer = ({ setView }: FooterProps) => {
         </div>
       </div>
 
-      <div className="border-t border-gray-700 w-full flex items-center justify-center h-[70px] px-4 md:px-0">
+      <div className="border-t border-gray-700 w-full flex gap-2 items-center justify-center h-[70px] px-4 md:px-0">
         <p className="text-gray-500 text-sm text-center">
-          © {currentYear} F1 RaceView. All rights reserved.
+          © {currentYear} F1 RaceView. All rights reserved
+        </p>
+        <p className="text-gray-500 text-sm text-center">-</p>
+        <p className="text-gray-500 text-sm text-center">
+          Coded by Alexander Lind
         </p>
       </div>
     </footer>
