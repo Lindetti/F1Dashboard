@@ -20,7 +20,7 @@ interface HomeProps {
   setView: (view: string) => void;
 }
 
-const Home: React.FC<HomeProps> = ({ view, setView }) => {
+const Home = ({ view, setView }: HomeProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -232,7 +232,7 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
                     <div
                       key={index}
                       style={{ backgroundColor: teamColor }}
-                      className="font-sans relative min-h-[170px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-center items-center p-7 text-white shadow-md"
+                      className="font-sans relative min-h-[170px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-center items-center p-7 text-white shadow-md overflow-hidden"
                     >
                       <div className="mb-5 flex flex-col items-center">
                         <p className="text-lg font-semibold">
@@ -249,9 +249,9 @@ const Home: React.FC<HomeProps> = ({ view, setView }) => {
                       <div className="absolute top-2 left-3 flex font-bold text-lg bg-[#27272A] px-2 rounded-lg">
                         <p>P{driver.position}</p>
                       </div>
-                      <div className="absolute bg-[#27272A]/50 backdrop-blur-lg w-[100%] bottom-0 h-[45px] rounded-bl-2xl rounded-br-2xl border border-gray-500 flex flex-col justify-center">
-                        <div className="px-3 flex justify-between items-center text-white font-bold">
-                          <p className="bg-[#27272A] backdrop-blur px-5 py-[2px] rounded-lg text-white">
+                      <div className="absolute bg-[#27272A]/40 backdrop-blur-lg bottom-0 h-[45px] rounded-bl-2xl rounded-br-2xl border border-gray-400  w-[100%] flex flex-col justify-center">
+                        <div className="px-2 md:px-3 flex justify-between items-center text-white font-bold">
+                          <p className="bg-[#27272A] backdrop-blur px-3 md:px-5 py-[2px] rounded-lg text-white">
                             {driver.Driver.code}
                           </p>
                           <p>{driver.Time.time}</p>

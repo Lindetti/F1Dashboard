@@ -113,16 +113,21 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
                       <td className="px-10 py-4 whitespace-nowrap">
                         {standing.position}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
+                      <td className="px-4 py-2 whitespace-nowrap relative">
                         <div className="flex items-center gap-2">
                           <div
                             className=" md:block w-[5px] h-[15px]"
                             style={{ backgroundColor }}
                           ></div>
-                          <span className="font-semibold">
-                            {standing.Driver.code ||
-                              `${standing.Driver.familyName}`}
-                          </span>
+                          <div className="relative group">
+                            <div className="cursor-default font-semibold">
+                              {standing.Driver.code}
+                            </div>
+                            <div className="absolute w-auto border border-gray-700 left-full top-1/2 transform -translate-y-1/2 ml-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+                              {standing.Driver.givenName}{" "}
+                              {standing.Driver.familyName}
+                            </div>
+                          </div>
                         </div>
                       </td>
                       <td className="hidden md:table-cell px-4 py-2 whitespace-nowrap">
@@ -138,11 +143,21 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
                         </div>
                       </td>
                       <td className="hidden md:table-cell px-4 py-2 whitespace-nowrap">
-                        <div
-                          className="px-2 py-0.5 rounded-lg inline-block text-white"
-                          style={{ backgroundColor }}
-                        >
-                          {standing.Constructors[0]?.name}
+                        <div className="flex gap-2 items-center">
+                          <div
+                            className="h-[30px] w-[5px]"
+                            style={{ backgroundColor }}
+                          ></div>
+                          <p
+                            style={{ backgroundColor }}
+                            className={`text-sm font-semibold flex items-center px-2 rounded-lg whitespace-nowrap ${
+                              backgroundColor === "#FFF500"
+                                ? "text-black"
+                                : "text-white"
+                            }`}
+                          >
+                            {standing.Constructors[0]?.name}
+                          </p>
                         </div>
                       </td>
                       <td className="px-4 py-2 font-semibold whitespace-nowrap">
