@@ -54,7 +54,7 @@ const CustomMap: React.FC<CustomMapProps> = ({ lat, long, zoom, raceName }) => {
       <MapContainer
         center={position}
         zoom={zoom}
-        style={{ width: "100%", height: "100%", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}
+        style={{ width: "100%", height: "100%", borderRadius: "10px" }}
         minZoom={zoom}
         maxZoom={16}
         ref={mapRef}

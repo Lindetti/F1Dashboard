@@ -29,7 +29,7 @@ const RaceInfo = ({ selectedRaceData }: RaceInfoProps) => {
     : null;
 
   if (!selectedRaceData) {
-    return <p>No race selected</p>;
+    return <p>Hang tight – the next race is on its way</p>;
   }
 
   return (
@@ -49,19 +49,19 @@ const RaceInfo = ({ selectedRaceData }: RaceInfoProps) => {
         </div>
       </div>
 
-      <div className="w-full h-[525px] flex flex-col gap-4">
-        <div className="flex w-full flex-col md:flex-row justify-start gap-2 mb-2">
-          <p className="p-1 px-3 rounded-2xl text-lg text-center">
-            | {selectedRaceData.Circuit.circuitName} |
-          </p>
-          <div className="flex justify-center">
-            <p className="bg-[#3F3F46] p-1 px-3 rounded-2xl text-lg text-white">
+      <div className="w-full h-[525px] flex flex-col md:gap-0 gap-4">
+        <div className="flex w-full flex-col md:flex-row justify-start gap-4 mb-2">
+          <div className="flex flex-col md:flex-row items-center">
+            <p className="p-1 px-3 rounded-2xl text-lg text-center ">
+              | {selectedRaceData.Circuit.circuitName} |
+            </p>
+            <p className=" text-lg text-gray-300 ">
               {selectedRaceData.Circuit.Location.locality},{" "}
               {selectedRaceData.Circuit.Location.country}
             </p>
           </div>
           <div className="flex justify-center">
-            <p className="bg-[#3F3F46] font-semibold text-lg uppercase px-3 rounded-2xl text-white flex items-center">
+            <p className="bg-[#20202D] font-semibold text-lg px-2 rounded-lg py-1 md:py-0 text-blue-200 flex items-center border border-gray-700">
               {new Date(selectedRaceData.date).toLocaleDateString("en-GB", {
                 month: "long",
                 day: "numeric",
@@ -81,7 +81,7 @@ const RaceInfo = ({ selectedRaceData }: RaceInfoProps) => {
             />
           </div>
         ) : (
-          <p>No location available</p>
+          <p>Location information not yet available</p>
         )}
       </div>
     </div>

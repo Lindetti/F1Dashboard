@@ -55,7 +55,7 @@ const Home = ({ view, setView }: HomeProps) => {
 
   return (
     <div className="w-full lg:w-4/6 min-h-screen flex flex-col gap-2 md:gap-8 mb-5 justify-center p-4 lg:p-0">
-      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-4 md:p-0">
+      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-4 md:p-0 md:border-0 border-t border-gray-700 border-b">
         {" "}
         <div
           onClick={() => setView("standings")}
@@ -207,19 +207,45 @@ const Home = ({ view, setView }: HomeProps) => {
         >
           <div className="h-auto flex flex-col gap-3 flex-1">
             <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex gap-2 items-center justify-center mb-2 md:hidden">
-                <img
-                  src={
-                    countrysData[
-                      selectedRaceData?.Circuit?.Location?.country || "Unknown"
-                    ]
-                  }
-                  alt={selectedRaceData?.Circuit.Location.country}
-                  className="w-10 h-8 rounded-lg"
-                />
-                <p className="text-2xl">
-                  {selectedRaceData?.raceName || "No circuit name available"}
+              <div className="flex flex-col gap-2 md:hidden items-center">
+                <p className="text-gray-400">
+                  {(() => {
+                    const raceDate = new Date(
+                      selectedRaceData?.date || Date.now()
+                    );
+                    const today = new Date();
+                    const yesterday = new Date(today);
+                    yesterday.setDate(today.getDate() - 1);
+
+                    const formattedDate = raceDate.toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    });
+
+                    if (raceDate.toDateString() === yesterday.toDateString()) {
+                      return `Latest race: ${formattedDate}`;
+                    }
+                    return raceDate < today
+                      ? `Previous race: ${formattedDate}`
+                      : `Upcoming race: ${formattedDate}`;
+                  })()}
                 </p>
+                <div className="flex gap-2 items-center justify-center mb-2">
+                  <img
+                    src={
+                      countrysData[
+                        selectedRaceData?.Circuit?.Location?.country ||
+                          "Unknown"
+                      ]
+                    }
+                    alt={selectedRaceData?.Circuit.Location.country}
+                    className="w-8 h-5 rounded"
+                  />
+                  <p className="text-lg text-gray-300 font-semibold">
+                    {selectedRaceData?.raceName || "No circuit name available"}
+                  </p>
+                </div>
               </div>
               {results.length === 0 ? (
                 <p className="text-center w-full">No results yet</p>
@@ -231,27 +257,35 @@ const Home = ({ view, setView }: HomeProps) => {
                   return (
                     <div
                       key={index}
-                      style={{ backgroundColor: teamColor }}
-                      className="font-sans relative min-h-[170px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-center items-center p-7 text-white shadow-md overflow-hidden"
+                      className="bg-[#1A1A24] font-sans relative min-h-[170px] md:h-[150px] flex-1 rounded-2xl flex flex-col justify-center items-center p-7 text-white shadow-md overflow-hidden border border-gray-700"
                     >
-                      <div className="mb-5 flex flex-col items-center">
+                      <div className="mb-5 flex flex-col gap-1 items-center text-gray-300">
                         <p className="text-lg font-semibold">
                           {driver.Driver.givenName} {driver.Driver.familyName}
                         </p>
-                        <p className="font-semibold text-2xl">
-                          {driver.Constructor.name}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-1 h-6"
+                            style={{ backgroundColor: teamColor }}
+                          ></div>
+                          <p className="font-semibold text-2xl text-gray-300">
+                            {driver.Constructor.name}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex gap-1 absolute top-2 right-2 font-semibold bg-[#27272A] px-2 rounded-lg">
+                      <div className="flex gap-1 absolute top-3 right-2 font-semibold bg-[#20202D] px-2 py-0.5 rounded-lg text-yellow-400 border border-gray-700">
                         <p>{driver.points}</p>
                         <p>PTS</p>
                       </div>
-                      <div className="absolute top-2 left-3 flex font-bold text-lg bg-[#27272A] px-2 rounded-lg">
+                      <div className="absolute top-3 left-2 flex font-bold text-lg bg-[#20202D] px-2 rounded-lg text-gray-300 border border-gray-700">
                         <p>P{driver.position}</p>
                       </div>
-                      <div className="absolute bg-[#27272A]/40 backdrop-blur-lg bottom-0 h-[45px] rounded-bl-2xl rounded-br-2xl border border-gray-400  w-[100%] flex flex-col justify-center">
-                        <div className="px-2 md:px-3 flex justify-between items-center text-white font-bold">
-                          <p className="bg-[#27272A] backdrop-blur px-3 md:px-5 py-[2px] rounded-lg text-white">
+                      <div className="absolute bg-[#20202D] backdrop-blur-lg bottom-0 h-[45px] rounded-bl-2xl rounded-br-2xl border border-gray-700  w-[99%] flex flex-col justify-center">
+                        <div className="px-2 md:px-3 flex justify-between items-center text-gray-200 font-bold">
+                          <p
+                            className="py-[2px] rounded-lg text-gray-700 font-bold w-[50px] text-center"
+                            style={{ backgroundColor: teamColor }}
+                          >
                             {driver.Driver.code}
                           </p>
                           <p>{driver.Time.time}</p>
@@ -282,7 +316,7 @@ const Home = ({ view, setView }: HomeProps) => {
                   </div>
                 </div>
               ) : (
-                <p>No fastest lap data</p>
+                <p>Fastest lap data will be available after the race</p>
               )}
             </div>{" "}
             <div className="block lg:hidden mt-2">
@@ -340,7 +374,7 @@ const Home = ({ view, setView }: HomeProps) => {
             </div>
           </div>
 
-          <div className="h-auto w-full md:w-[320px] flex flex-col gap-5 mb-5 md:mb-0 hidden lg:flex">
+          <div className="h-auto w-full md:w-[320px] md:flex flex-col gap-5 mb-5 md:mb-0 hidden lg:flex">
             <RaceResults results={results} />{" "}
             <div className="bg-[#1A1A24] p-4 rounded-lg border border-gray-700 block">
               <h2 className="text-xl font-semibold text-gray-300 mb-4">
