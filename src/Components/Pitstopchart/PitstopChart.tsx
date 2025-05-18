@@ -191,9 +191,8 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
   };
   if (pitstops.length === 0) {
     return (
-      <div>
-        <h2>Pitstops Chart</h2>
-        <p>No pitstop data available for this race.</p>
+      <div className="flex items-center justify-center">
+        <p>No pitstop data available yet.</p>
       </div>
     );
   }

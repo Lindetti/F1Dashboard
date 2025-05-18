@@ -19,6 +19,14 @@ interface RaceResultsProps {
 }
 
 const RaceResults = ({ results }: RaceResultsProps) => {
+  if (results.length === 0) {
+    return (
+      <div className="text-center text-gray-300 font-semibold py-4">
+        Race results will be available after next race.
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto">
       <table className="table-auto w-full border-collapse">
