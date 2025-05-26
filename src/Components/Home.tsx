@@ -14,6 +14,7 @@ import RacesBtn from "../assets/icons/race.png";
 import BackToDashboardBtnIcon from "../assets/icons/dashboard.png";
 import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
+import { LeftWave, RightWave } from "./DecorativeWaves";
 
 interface HomeProps {
   view: string;
@@ -54,8 +55,10 @@ const Home = ({ view, setView }: HomeProps) => {
   }, [view]);
 
   return (
-    <div className="w-full lg:w-4/6 min-h-screen flex flex-col gap-2 md:gap-8 mb-5 justify-center p-4 lg:p-0">
-      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-4 md:p-0 md:border-0 border-t border-gray-700 border-b">
+    <div className="w-full lg:w-4/6 min-h-screen flex flex-col gap-2 md:gap-8 mb-5 justify-center p-4 lg:p-0 relative">
+      <LeftWave />
+      <RightWave />
+      <div className="flex flex-col md:flex-row justify-between gap-4 h-auto md:h-[50px] p-4 md:p-0 md:border-0 border-t border-gray-700 border-b z-10">
         {" "}
         <div
           onClick={() => setView("standings")}
@@ -186,14 +189,16 @@ const Home = ({ view, setView }: HomeProps) => {
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
           <div className="h-[600px] flex flex-col gap-4 items-center">
-            <ClipLoader color="#8B0000" size={100} />
-            <p className="text-gray-300 text-2xl font-semibold">
-              {view === "home"
-                ? "Preparing race insights..."
-                : view === "standings"
-                ? "Loading standings..."
-                : "Loading drivers.."}
-            </p>
+            <div className="relative flex flex-col gap-4 items-center w-full">
+              <ClipLoader color="#8B0000" size={100} className="z-10" />
+              <p className="text-gray-300 text-2xl font-semibold z-10">
+                {view === "home"
+                  ? "Preparing race insights..."
+                  : view === "standings"
+                  ? "Loading standings..."
+                  : "Loading drivers..."}
+              </p>
+            </div>
           </div>
         </div>
       ) : view === "home" ? (
@@ -214,18 +219,37 @@ const Home = ({ view, setView }: HomeProps) => {
                       selectedRaceData?.date || Date.now()
                     );
                     const today = new Date();
-                    const yesterday = new Date(today);
-                    yesterday.setDate(today.getDate() - 1);
 
+                    // Hitta det senaste racet (race som redan har hänt)
+                    const pastRaces = races.filter(
+                      (race) => new Date(race.date) <= today
+                    );
+
+                    // Sortera i fallande ordning baserat på datum (senaste först)
+                    const sortedPastRaces = [...pastRaces].sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime()
+                    );
+
+                    // Kolla om det valda racet är det senaste racet
+                    const latestRace = sortedPastRaces[0];
+
+                    // Formatera datumet på önskat sätt
                     const formattedDate = raceDate.toLocaleDateString("en-US", {
                       month: "long",
                       day: "numeric",
                       year: "numeric",
                     });
 
-                    if (raceDate.toDateString() === yesterday.toDateString()) {
+                    if (
+                      latestRace &&
+                      selectedRaceData &&
+                      latestRace.Circuit.circuitId ===
+                        selectedRaceData.Circuit.circuitId
+                    ) {
                       return `Latest race: ${formattedDate}`;
                     }
+
                     return raceDate < today
                       ? `Previous race: ${formattedDate}`
                       : `Upcoming race: ${formattedDate}`;

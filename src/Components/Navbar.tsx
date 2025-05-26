@@ -65,14 +65,16 @@ const Navbar = ({ setView }: NavbarProps) => {
             <span className="text-gray-300 font-semibold flex items-center gap-2">
               {(() => {
                 const currentDate = new Date();
-                const yesterday = new Date(currentDate);
-                yesterday.setDate(currentDate.getDate() - 1);
 
-                const latestRace = races.find(
-                  (race) =>
-                    new Date(race.date).toDateString() ===
-                    yesterday.toDateString()
+                const pastRaces = races.filter(
+                  (race) => new Date(race.date) <= currentDate
                 );
+                const sortedPastRaces = [...pastRaces].sort(
+                  (a, b) =>
+                    new Date(b.date).getTime() - new Date(a.date).getTime()
+                );
+
+                const latestRace = sortedPastRaces[0];
 
                 if (latestRace) {
                   const flagKey = getFlagKey(

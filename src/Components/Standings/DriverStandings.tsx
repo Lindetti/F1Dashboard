@@ -75,7 +75,7 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
   }, [selectedYear]);
 
   return (
-    <div className="rounded-tl-lg rounded-b-lg shadow-lg border border-gray-700 overflow-x-auto">
+    <div className="rounded-tl-lg rounded-tr-lg rounded-b-lg shadow-lg border border-gray-700 overflow-x-auto">
       {loading ? (
         <div className="text-center text-xl py-10">Loading...</div>
       ) : (
@@ -160,7 +160,7 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
                           </p>
                         </div>
                       </td>
-                      <td className="px-4 py-2 font-semibold whitespace-nowrap">
+                      <td className="px-4 py-2 whitespace-nowrap text-yellow-500 font-semibold">
                         {standing.points || "N/A"}
                       </td>
                     </tr>
