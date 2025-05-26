@@ -15,7 +15,6 @@ import {
   PointElement,
 } from "chart.js";
 
-// Registrera de nödvändiga delarna för chart.js
 ChartJS.register(
   Title,
   Tooltip,
@@ -50,6 +49,19 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
 }) => {
   const [pitstops, setPitstops] = useState<Pitstop[]>([]);
   const [drivers, setDrivers] = useState<{ [key: string]: string }>({});
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // Hantera responsivitet med en resize-lyssnare
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!selectedRaceData) return;
@@ -69,7 +81,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
               time: pitstop.time,
               duration: pitstop.duration,
               driverId: pitstop.driverId,
-              driverName: pitstop.driverId, // Placeholder, vi uppdaterar senare
+              driverName: pitstop.driverId,
             })
           ) || [];
 
@@ -113,15 +125,14 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
     borderColor: "gray", // Linjen är neutral (grå)
     backgroundColor: pitstops.map((pitstop) => {
       const team = drivers[pitstop.driverId] || "Unknown";
-      const color = teamColors[team] || "white"; // Om team inte finns i teamColors, sätt till svart
+      const color = teamColors[team] || "white";
       return color;
     }),
     fill: false,
-    pointRadius: 5,
+    pointRadius: windowWidth < 768 ? 3 : 5, // Mindre punkter på mobil
     yAxisID: "y",
   };
 
-  // Förbered data för diagrammet
   const chartData = {
     labels: pitstops.map((pit) => pit.time),
     datasets: [dataset],
@@ -130,6 +141,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
   // Konfigurera y-axlar för tid och varv
   const options: ChartOptions<"line"> = {
     responsive: true,
+    maintainAspectRatio: false, // Tillåter att höjden anpassas baserat på container
     scales: {
       x: {
         type: "category",
@@ -139,9 +151,15 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
         },
         ticks: {
           color: "rgb(209 213 219)", // text-gray-300 equivalent
+          font: {
+            size: windowWidth < 768 ? 8 : 12, // Mindre text på mobil
+          },
+          maxRotation: 45, // Rotera etiketter för att spara utrymme
+          minRotation: 45,
         },
         grid: {
           color: "rgb(209 213 219 / 0.1)", // Subtle grid lines
+          display: windowWidth >= 768, // Dölj rutnät på mobil för renare utseende
         },
       },
       y: {
@@ -151,7 +169,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
           display: true,
           text: "Lap",
           font: {
-            size: 16,
+            size: windowWidth < 768 ? 14 : 16,
             family: "'Arial', sans-serif",
             weight: "bold",
           },
@@ -159,9 +177,9 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
         },
         ticks: {
           callback: (value) => value,
-          padding: 30,
+          padding: windowWidth < 768 ? 5 : 30, // Mindre padding på mobil
           font: {
-            size: 15,
+            size: windowWidth < 768 ? 12 : 15,
             family: "'Arial', sans-serif",
             weight: "normal",
           },
@@ -169,11 +187,15 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
         },
         grid: {
           color: "rgb(209 213 219 / 0.1)", // Subtle grid lines
+          display: windowWidth >= 768, // Dölj rutnät på mobil för renare utseende
         },
       },
     },
     plugins: {
       tooltip: {
+        enabled: true,
+        mode: "nearest",
+        intersect: true,
         callbacks: {
           label: (context) => {
             const rawData = context.raw as { x: string; y: number } | undefined;
@@ -192,12 +214,12 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
   if (pitstops.length === 0) {
     return (
       <div className="flex items-center justify-center">
-        <p>No pitstop data available yet.</p>
+        <p>Awaiting official pit stop data…</p>
       </div>
     );
   }
   return (
-    <div className="pitstop-chart h-auto md:h-[440px] bg-[#1A1A24] text-gray-300 p-4 rounded-lg">
+    <div className="pitstop-chart h-[300px] md:h-[440px] bg-[#1A1A24] text-gray-300 p-2 md:p-4 rounded-lg">
       <Line data={chartData} options={options} />
     </div>
   );

@@ -22,7 +22,8 @@ const RaceResults = ({ results }: RaceResultsProps) => {
   if (results.length === 0) {
     return (
       <div className="text-center text-gray-300 font-semibold py-4">
-        Race results will be available after next race.
+        Race results will be available as soon as we receive data from the
+        latest race.
       </div>
     );
   }

@@ -243,15 +243,19 @@ const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
               <p className=" font-semibold text-gray-300 ">Season stats</p>
               <div className="flex justify-between">
                 <p>Championship </p>
-                <p className="font-semibold">P{driverData.position}</p>
+                <p className="font-semibold text-gray-200">
+                  P{driverData.position}
+                </p>
               </div>
               <div className="flex justify-between">
                 <p>Points </p>
-                <p className="font-semibold">{driverData.points}</p>
+                <p className="font-semibold text-yellow-500">
+                  {driverData.points}
+                </p>
               </div>
               <div className="flex justify-between">
                 <p>Wins </p>
-                <p className="font-semibold">{driverData.wins}</p>
+                <p className="font-semibold text-gray-200">{driverData.wins}</p>
               </div>
               <div className="flex justify-between">
                 <p>Seasons active </p>

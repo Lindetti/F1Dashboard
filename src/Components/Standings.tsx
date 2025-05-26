@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import DriverStandings from "./Standings/DriverStandings";
 import ConstructorStandings from "./Standings/ConstructorStandings";
 import { motion } from "framer-motion";
-import StandingsDriverImage from "../Images/standingsDriver2.png";
 import MobileDriver from "../Images/drivermobile.jpg";
+import StandingsDriverImage2 from "../Images/standingsDriver3.jpg";
 
 const Standings = () => {
   const currentYear = new Date().getFullYear();
@@ -60,26 +60,30 @@ const Standings = () => {
 
         <div className="flex flex-col md:flex-row gap-5 mt-4">
           <div className="flex border border-gray-700 w-full md:w-[400px] h-[40px] items-center justify-center rounded-md">
-            <button
-              onClick={() => setView("driver")}
-              className={`w-full cursor-pointer py-1 rounded-sm  ${
-                view === "driver"
-                  ? "bg-[#20202D] font-semibold text-gray-300"
-                  : "text-gray-400"
-              }`}
-            >
-              Drivers
-            </button>
-            <button
-              onClick={() => setView("constructor")}
-              className={`w-full cursor-pointer py-1 rounded-sm ${
-                view === "constructor"
-                  ? "bg-[#20202D] font-semibold text-gray-300"
-                  : "text-gray-400"
-              }`}
-            >
-              Constructors
-            </button>
+            <div className="p-1 w-full">
+              <button
+                onClick={() => setView("driver")}
+                className={`w-full cursor-pointer py-0.5 rounded-sm  ${
+                  view === "driver"
+                    ? "bg-[#8B0000] font-semibold text-gray-300"
+                    : "text-gray-400 hover:bg-[#20202D]"
+                }`}
+              >
+                Drivers
+              </button>
+            </div>
+            <div className="p-1 w-full">
+              <button
+                onClick={() => setView("constructor")}
+                className={`w-full cursor-pointer py-0.5 rounded-sm ${
+                  view === "constructor"
+                    ? "bg-[#8B0000] font-semibold text-gray-300"
+                    : "text-gray-400 hover:bg-[#20202D]"
+                }`}
+              >
+                Constructors
+              </button>
+            </div>
           </div>{" "}
           <div ref={dropdownRef} className="w-full md:w-auto relative">
             <button
@@ -125,17 +129,19 @@ const Standings = () => {
               {selectedYear} Season{" "}
               {view === "driver" ? "Driver" : "Constructor"} Standings
             </p>
-          </div>
-
-          <div className="hidden md:block absolute top-[-124px] right-[1px] w-[250px] h-[200px] z-0">
+          </div>{" "}
+          <div className="hidden md:block absolute top-[-124px] right-[1px] w-[500px] h-[200px] z-0">
             {" "}
-            <div className="relative h-full w-full overflow-hidden rounded-t-2xl">
+            <div className="relative h-full w-full overflow-hidden shadow-[0_0_8px_8px_#1A1A24] rounded-t-lg">
               <img
-                className="w-full h-full object-cover brightness-75"
-                src={StandingsDriverImage}
+                className="w-full h-full object-cover brightness-40 mix-blend-multiply"
+                src={StandingsDriverImage2}
                 alt="driverImage"
+                style={{
+                  boxShadow: "0 0 12px 12px #1A1A24 inset",
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-500 opacity-40"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A24]/95 to-[#1A1A24] opacity-85"></div>
             </div>
             <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-10 text-center py-4 rounded-br-3xl">
               <div className="flex justify-center items-center gap-1">

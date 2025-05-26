@@ -81,7 +81,7 @@ const RaceInfo = ({ selectedRaceData }: RaceInfoProps) => {
             />
           </div>
         ) : (
-          <p>Location information not yet available</p>
+          <p>Race data is being updated — please check back soon.</p>
         )}
       </div>
     </div>
