@@ -28,6 +28,7 @@ import UAE from "./Images/Flags/uae.png";
 import Singapore from "./Images/Flags/Singapore.jpg";
 import Qatar from "./Images/Flags/qatar.png";
 import Azerbajian from "./Images/Flags/azerbaijan.png";
+import Hungary from "./Images/Flags/hungary.png";
 
 export const countrysData: { [key: string]: string } = {
   China: China,
@@ -61,4 +62,5 @@ export const countrysData: { [key: string]: string } = {
   Singapore: Singapore,
   Qatar: Qatar,
   Azerbaijan: Azerbajian,
+  Hungary: Hungary,
 };
