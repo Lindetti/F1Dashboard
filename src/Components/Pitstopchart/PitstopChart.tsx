@@ -51,7 +51,6 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
   const [drivers, setDrivers] = useState<{ [key: string]: string }>({});
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // Hantera responsivitet med en resize-lyssnare
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -93,7 +92,7 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
 
     const fetchDriverStandingsData = async () => {
       try {
-        const year = new Date().getFullYear(); // Dynamiskt år
+        const year = new Date().getFullYear();
         const response = await fetch(
           `https://api.jolpi.ca/ergast/f1/${year}/${selectedRaceData.round}/driverstandings.json`
         );
@@ -122,14 +121,14 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
   const dataset = {
     label: "Pitstops",
     data: pitstops.map((pitstop) => ({ x: pitstop.time, y: pitstop.lap })),
-    borderColor: "gray", // Linjen är neutral (grå)
+    borderColor: "gray", 
     backgroundColor: pitstops.map((pitstop) => {
       const team = drivers[pitstop.driverId] || "Unknown";
       const color = teamColors[team] || "white";
       return color;
     }),
     fill: false,
-    pointRadius: windowWidth < 768 ? 3 : 5, // Mindre punkter på mobil
+    pointRadius: windowWidth < 768 ? 3 : 5, 
     yAxisID: "y",
   };
 
@@ -138,10 +137,10 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
     datasets: [dataset],
   };
 
-  // Konfigurera y-axlar för tid och varv
+
   const options: ChartOptions<"line"> = {
     responsive: true,
-    maintainAspectRatio: false, // Tillåter att höjden anpassas baserat på container
+    maintainAspectRatio: false, 
     scales: {
       x: {
         type: "category",
@@ -150,16 +149,16 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
           padding: 10,
         },
         ticks: {
-          color: "rgb(209 213 219)", // text-gray-300 equivalent
+          color: "rgb(209 213 219)", 
           font: {
-            size: windowWidth < 768 ? 8 : 12, // Mindre text på mobil
+            size: windowWidth < 768 ? 8 : 12, 
           },
-          maxRotation: 45, // Rotera etiketter för att spara utrymme
+          maxRotation: 45, 
           minRotation: 45,
         },
         grid: {
-          color: "rgb(209 213 219 / 0.1)", // Subtle grid lines
-          display: windowWidth >= 768, // Dölj rutnät på mobil för renare utseende
+          color: "rgb(209 213 219 / 0.1)", 
+          display: windowWidth >= 768, 
         },
       },
       y: {
@@ -173,21 +172,21 @@ const PitstopChart: React.FC<{ selectedRaceData: Race | undefined }> = ({
             family: "'Arial', sans-serif",
             weight: "bold",
           },
-          color: "rgb(209 213 219)", // text-gray-300 equivalent
+          color: "rgb(209 213 219)", 
         },
         ticks: {
           callback: (value) => value,
-          padding: windowWidth < 768 ? 5 : 30, // Mindre padding på mobil
+          padding: windowWidth < 768 ? 5 : 30, 
           font: {
             size: windowWidth < 768 ? 12 : 15,
             family: "'Arial', sans-serif",
             weight: "normal",
           },
-          color: "rgb(209 213 219)", // text-gray-300 equivalent
+          color: "rgb(209 213 219)", 
         },
         grid: {
-          color: "rgb(209 213 219 / 0.1)", // Subtle grid lines
-          display: windowWidth >= 768, // Dölj rutnät på mobil för renare utseende
+          color: "rgb(209 213 219 / 0.1)", 
+          display: windowWidth >= 768, 
         },
       },
     },

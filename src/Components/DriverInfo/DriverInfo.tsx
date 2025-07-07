@@ -62,7 +62,6 @@ const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
         const now = Date.now();
         const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-        // Check cache for driver standings
         const cachedDriverData = localStorage.getItem(
           `driverStandings_${driverId}_${selectedYear}`
         );
@@ -76,7 +75,6 @@ const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
         }
 
         if (!driver) {
-          // Fetch fresh driver standings data if not in cache or expired
           const driverResponse = await fetch(
             `https://api.jolpi.ca/ergast/f1/${selectedYear}/driverstandings.json`
           );
@@ -115,7 +113,6 @@ const DriverInfo = ({ driverId, selectedYear }: DriverInfoProps) => {
         }
 
         if (!seasonsData) {
-          // Fetch fresh seasons data if not in cache or expired
           const seasonResponse = await fetch(
             `https://api.jolpi.ca/ergast/f1/drivers/${driverId}/seasons.json`
           );

@@ -27,7 +27,7 @@ const DriverStandings = ({ selectedYear }: DriverStandingsProps) => {
   useEffect(() => {
     const fetchDriverStandings = async () => {
       try {
-        // Check localStorage first
+        // Check localStorage 
         const cacheKey = `driver-standings-${selectedYear}`;
         const cachedData = localStorage.getItem(cacheKey);
 

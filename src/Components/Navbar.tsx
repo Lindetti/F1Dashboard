@@ -9,7 +9,6 @@ const Navbar = ({ setView }: NavbarProps) => {
 
   const getNextRace = () => {
     const currentDate = new Date();
-    // Sortera racen efter datum och hitta nästa race
     const sortedRaces = [...races].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
@@ -43,6 +42,7 @@ const Navbar = ({ setView }: NavbarProps) => {
       Poland: "Polish",
       Indonesia: "Indonesian",
       Belgium: "Belgian",
+      Hungary: "Hungary",
     };
     return mapping[country] || "";
   };

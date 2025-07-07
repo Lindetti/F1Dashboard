@@ -21,6 +21,7 @@ import Sweden from "./Images/Flags/swedish.png";
 import Poland from "./Images/Flags/poland.png";
 import Indonesia from "./Images/Flags/indonesia.png";
 import Belgium from "./Images/Flags/belgium.png";
+import Hungary from "./Images/Flags/hungary.png";
 
 export const flagData: { [key: string]: string } = {
   British: British,
@@ -46,4 +47,5 @@ export const flagData: { [key: string]: string } = {
   Polish: Poland,
   Indonesian: Indonesia,
   Belgian: Belgium,
+  Hungary: Hungary,
 };
