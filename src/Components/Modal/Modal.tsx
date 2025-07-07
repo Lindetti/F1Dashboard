@@ -17,7 +17,7 @@ const Modal = ({ isOpen, onClose, children, teamName }: ModalProps) => {
     }
   };
 
-  const borderColor = teamName ? teamColors[teamName] : "#374151"; // gray-700 as fallback
+  const borderColor = teamName ? teamColors[teamName] : "#374151"; 
 
   return (
     <AnimatePresence>

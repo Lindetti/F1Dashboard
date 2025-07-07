@@ -47,7 +47,6 @@ const Home = ({ view, setView }: HomeProps) => {
 
   useEffect(() => {
     setIsLoading(true);
-    // Simulera en kort laddningstid när vyn ändras
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -220,21 +219,17 @@ const Home = ({ view, setView }: HomeProps) => {
                     );
                     const today = new Date();
 
-                    // Hitta det senaste racet (race som redan har hänt)
                     const pastRaces = races.filter(
                       (race) => new Date(race.date) <= today
                     );
 
-                    // Sortera i fallande ordning baserat på datum (senaste först)
                     const sortedPastRaces = [...pastRaces].sort(
                       (a, b) =>
                         new Date(b.date).getTime() - new Date(a.date).getTime()
                     );
 
-                    // Kolla om det valda racet är det senaste racet
                     const latestRace = sortedPastRaces[0];
 
-                    // Formatera datumet på önskat sätt
                     const formattedDate = raceDate.toLocaleDateString("en-US", {
                       month: "long",
                       day: "numeric",

@@ -6,7 +6,6 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-// Fixa standard-ikonen för Leaflet
 interface IconDefault extends Icon.Default {
   _getIconUrl?: string;
 }
@@ -38,16 +37,14 @@ const CustomMap: React.FC<CustomMapProps> = ({ lat, long, zoom, raceName }) => {
 
   useEffect(() => {
     if (mapRef.current && raceCoordinates.length > 0) {
-      // Create a LatLngBounds with the coordinates (all must be LatLngTuples)
-      const bounds = new LatLngBounds(raceCoordinates); // LatLngBounds expects LatLngTuple[]
+      const bounds = new LatLngBounds(raceCoordinates);
 
-      // Adjust the map view to fit the coordinates
       mapRef.current.fitBounds(bounds, {
-        padding: [50, 50], // Adds a little padding around the map
-        animate: true, // Animates the adjustment of the map
+        padding: [50, 50],
+        animate: true,
       });
     }
-  }, [raceCoordinates]); // Only re-run when raceCoordinates change
+  }, [raceCoordinates]);
 
   return (
     <div style={{ height: "100%" }}>

@@ -75,7 +75,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
         const data: RaceResponse = await response.json();
 
         if (data.MRData.RaceTable.Races.length > 0) {
-          // Sortera racen efter datum i fallande ordning (nyaste först)
           const sortedRaces = data.MRData.RaceTable.Races.sort((a, b) => {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
@@ -102,7 +101,7 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchRaces();
-  }, [selectedRace]); // Kör endast när selectedRace ändras// Lägg till selectedRace så att vi säkerställer att förvalda uppdateras korrekt
+  }, [selectedRace]); 
 
   useEffect(() => {
     if (!selectedRace) return;
