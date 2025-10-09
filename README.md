@@ -6,7 +6,7 @@ View upcoming or past races, check current driver and constructor standings, and
 
 ---
 
-## ✨ Features
+## Features
 - View upcoming and past races
 - See race results and lap times
 - View detailed driver info and statistics 
@@ -15,7 +15,7 @@ View upcoming or past races, check current driver and constructor standings, and
 
 ---
 
-## 🧠 Tech Stack
+## Tech Stack
 - **React**  
 - **TypeScript**  
 - **jolpica-f1**  
